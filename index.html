@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
-        /* ===== RESET & BASE ===== */
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -24,16 +24,16 @@
             overflow-x: hidden;
         }
 
-        /* ===== FOND D'ÉCRAN : FORÊT PRÉHISTORIQUE SOMBRE ===== */
+        /* ===== FOND : VRAIE FORÊT PRÉHISTORIQUE ===== */
         .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=1920&q=80') center/cover no-repeat;
+            background: url('https://images.unsplash.com/photo-1511497584788-876760111969?w=1920&q=80') center/cover no-repeat;
             z-index: -2;
-            filter: brightness(0.4) saturate(1.2);
+            filter: brightness(0.5) saturate(1.1) contrast(1.1);
         }
 
         .background::after {
@@ -43,11 +43,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, rgba(20, 40, 20, 0.3) 0%, rgba(5, 15, 5, 0.7) 100%);
+            background: radial-gradient(ellipse at center, rgba(10, 30, 10, 0.2) 0%, rgba(0, 5, 0, 0.7) 100%);
             z-index: -1;
         }
 
-        /* ===== DINOSAURES EN FOND (GIF animés) ===== */
+        /* ===== DINOSAURES EN FOND (GIF QUI MARCHENT VRAIMENT) ===== */
         .dino-bg {
             position: fixed;
             bottom: 0;
@@ -59,84 +59,141 @@
             overflow: hidden;
         }
 
-        .dino-bg img {
+        .dino-bg .dino {
             position: absolute;
-            opacity: 0.25;
-            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.8));
-            animation: dinoWalk 20s ease-in-out infinite;
+            opacity: 0.3;
         }
 
-        /* Dino 1 : Brachiosaure (loin) */
-        .dino-bg img:nth-child(1) {
-            width: 300px;
-            bottom: 10%;
-            left: -10%;
-            animation-duration: 35s;
-            animation-delay: 0s;
+        /* Dino 1 : Brachiosaure (géant, au fond) */
+        .dino-bg .dino-1 {
+            width: 400px;
+            bottom: 5%;
+            left: -5%;
+            animation: walkDino1 40s linear infinite;
             opacity: 0.15;
         }
 
         /* Dino 2 : T-Rex (plus proche) */
-        .dino-bg img:nth-child(2) {
-            width: 200px;
-            bottom: 5%;
+        .dino-bg .dino-2 {
+            width: 180px;
+            bottom: 2%;
             right: -5%;
-            animation-duration: 25s;
-            animation-delay: 5s;
-            opacity: 0.2;
+            animation: walkDino2 25s linear infinite;
+            opacity: 0.25;
+            animation-delay: 2s;
         }
 
         /* Dino 3 : Ptérosaure (qui vole) */
-        .dino-bg img:nth-child(3) {
+        .dino-bg .dino-3 {
             width: 120px;
-            top: 15%;
-            left: -5%;
-            animation-duration: 30s;
-            animation-delay: 10s;
+            top: 10%;
+            left: -10%;
+            animation: flyDino 30s ease-in-out infinite;
+            opacity: 0.2;
+            animation-delay: 5s;
+        }
+
+        /* Dino 4 : Petit dinosaure (rapide) */
+        .dino-bg .dino-4 {
+            width: 100px;
+            bottom: 0%;
+            left: 40%;
+            animation: walkDino4 35s linear infinite;
             opacity: 0.15;
-            animation-name: dinoFly;
+            animation-delay: 8s;
         }
 
-        /* Dino 4 : Petit dinosaure (au sol) */
-        .dino-bg img:nth-child(4) {
+        /* Dino 5 : Autre T-Rex (de l'autre côté) */
+        .dino-bg .dino-5 {
             width: 150px;
-            bottom: 2%;
-            left: 30%;
-            animation-duration: 40s;
-            animation-delay: 2s;
+            bottom: 8%;
+            right: 15%;
+            animation: walkDino5 28s linear infinite;
             opacity: 0.12;
+            animation-delay: 12s;
         }
 
-        @keyframes dinoWalk {
+        @keyframes walkDino1 {
             0% {
                 transform: translateX(0) scaleX(1);
             }
-            25% {
-                transform: translateX(20vw) scaleX(1);
-            }
             50% {
-                transform: translateX(40vw) scaleX(-1);
+                transform: translateX(110vw) scaleX(1);
             }
-            75% {
-                transform: translateX(20vw) scaleX(-1);
+            51% {
+                transform: translateX(110vw) scaleX(-1);
             }
             100% {
-                transform: translateX(0) scaleX(1);
+                transform: translateX(0) scaleX(-1);
             }
         }
 
-        @keyframes dinoFly {
+        @keyframes walkDino2 {
+            0% {
+                transform: translateX(0) scaleX(1) translateY(0);
+            }
+            25% {
+                transform: translateX(40vw) scaleX(1) translateY(-10px);
+            }
+            50% {
+                transform: translateX(80vw) scaleX(1) translateY(0);
+            }
+            51% {
+                transform: translateX(80vw) scaleX(-1) translateY(0);
+            }
+            75% {
+                transform: translateX(40vw) scaleX(-1) translateY(-10px);
+            }
+            100% {
+                transform: translateX(0) scaleX(-1) translateY(0);
+            }
+        }
+
+        @keyframes walkDino4 {
+            0% {
+                transform: translateX(0) scaleX(1);
+            }
+            50% {
+                transform: translateX(60vw) scaleX(1);
+            }
+            51% {
+                transform: translateX(60vw) scaleX(-1);
+            }
+            100% {
+                transform: translateX(0) scaleX(-1);
+            }
+        }
+
+        @keyframes walkDino5 {
+            0% {
+                transform: translateX(0) scaleX(1);
+            }
+            50% {
+                transform: translateX(-40vw) scaleX(1);
+            }
+            51% {
+                transform: translateX(-40vw) scaleX(-1);
+            }
+            100% {
+                transform: translateX(0) scaleX(-1);
+            }
+        }
+
+        @keyframes flyDino {
             0% {
                 transform: translate(0, 0) scaleX(1);
             }
-            25% {
-                transform: translate(30vw, -10vh) scaleX(1);
+            20% {
+                transform: translate(30vw, -15vh) scaleX(1);
             }
-            50% {
-                transform: translate(60vw, 5vh) scaleX(-1);
+            40% {
+                transform: translate(60vw, 5vh) scaleX(1);
             }
-            75% {
-                transform: translate(30vw, -5vh) scaleX(-1);
+            60% {
+                transform: translate(90vw, -10vh) scaleX(-1);
+            }
+            80% {
+                transform: translate(60vw, 8vh) scaleX(-1);
             }
             100% {
                 transform: translate(0, 0) scaleX(1);
@@ -161,22 +218,22 @@
             color: #fff;
             font-size: 1.2rem;
             animation: fall linear infinite;
-            opacity: 0.7;
-            text-shadow: 0 0 10px rgba(200, 220, 255, 0.3);
+            opacity: 0.6;
+            text-shadow: 0 0 15px rgba(200, 220, 255, 0.2);
         }
 
         @keyframes fall {
             0% {
                 transform: translateY(-20px) rotate(0deg) scale(1);
-                opacity: 0.7;
+                opacity: 0.6;
             }
             100% {
-                transform: translateY(100vh) rotate(720deg) scale(0.5);
-                opacity: 0.1;
+                transform: translateY(110vh) rotate(720deg) scale(0.3);
+                opacity: 0;
             }
         }
 
-        /* ===== CONTENU PRINCIPAL ===== */
+        /* ===== CONTENU ===== */
         .content {
             position: relative;
             z-index: 2;
@@ -185,21 +242,20 @@
             padding: 20px;
         }
 
-        /* ===== HEADER / TITRE ===== */
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
             padding: 60px 20px 40px;
-            background: rgba(10, 20, 10, 0.75);
+            background: rgba(8, 16, 8, 0.8);
             backdrop-filter: blur(8px);
             border-radius: 30px;
             margin-bottom: 40px;
-            border: 2px solid rgba(200, 50, 30, 0.3);
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(200, 50, 30, 0.1);
+            border: 2px solid rgba(200, 50, 30, 0.2);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(200, 50, 30, 0.05);
             position: relative;
             overflow: hidden;
         }
 
-        /* Guirlandes lumineuses (effet Noël) */
         .header::before {
             content: '✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦';
             position: absolute;
@@ -208,7 +264,7 @@
             width: 100%;
             font-size: 0.8rem;
             color: #ffd700;
-            opacity: 0.4;
+            opacity: 0.3;
             letter-spacing: 8px;
             animation: twinkle 3s ease-in-out infinite;
             pointer-events: none;
@@ -223,7 +279,7 @@
             width: 100%;
             font-size: 0.8rem;
             color: #ffd700;
-            opacity: 0.3;
+            opacity: 0.2;
             letter-spacing: 8px;
             animation: twinkle 4s ease-in-out infinite reverse;
             pointer-events: none;
@@ -231,15 +287,15 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.6; }
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.5; }
         }
 
         .header h1 {
             font-family: 'Fredoka One', 'Impact', cursive;
             font-size: 4rem;
             color: #f5e6d3;
-            text-shadow: 0 4px 30px rgba(200, 50, 20, 0.5), 0 0 80px rgba(200, 30, 10, 0.2);
+            text-shadow: 0 4px 30px rgba(200, 50, 20, 0.4), 0 0 80px rgba(200, 30, 10, 0.15);
             letter-spacing: 4px;
             position: relative;
             z-index: 1;
@@ -247,12 +303,12 @@
 
         .header h1 .rex {
             color: #e64a2a;
-            text-shadow: 0 0 40px rgba(230, 74, 42, 0.4);
+            text-shadow: 0 0 40px rgba(230, 74, 42, 0.3);
         }
 
         .header h1 .noel {
             color: #ffd700;
-            text-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
         }
 
         .header .slogan {
@@ -266,7 +322,7 @@
             padding: 10px 35px;
             border-radius: 50px;
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(200, 100, 50, 0.15);
+            border: 1px solid rgba(200, 100, 50, 0.1);
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
@@ -274,15 +330,14 @@
 
         .header .slogan small {
             font-size: 0.85rem;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
-        /* Petit sapin dans le header */
         .header .tree {
             position: absolute;
             right: 30px;
             bottom: 20px;
-            font-size: 2.8rem;
+            font-size: 3rem;
             opacity: 0.3;
             animation: treeGlow 3s ease-in-out infinite;
             z-index: 1;
@@ -298,7 +353,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(8, 18, 8, 0.9);
+            background: rgba(8, 16, 8, 0.92);
             backdrop-filter: blur(16px);
             padding: 14px 20px;
             border-radius: 60px;
@@ -307,7 +362,7 @@
             display: flex;
             justify-content: center;
             gap: 30px;
-            border: 1px solid rgba(200, 100, 50, 0.2);
+            border: 1px solid rgba(200, 100, 50, 0.15);
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
         }
 
@@ -345,28 +400,28 @@
             transform: scale(1.05);
         }
 
-        /* ===== SECTIONS CATÉGORIES ===== */
+        /* ===== CATÉGORIES ===== */
         .category {
-            background: rgba(10, 20, 10, 0.8);
+            background: rgba(8, 16, 8, 0.82);
             backdrop-filter: blur(8px);
             border-radius: 30px;
             padding: 30px 25px 40px;
             margin-bottom: 50px;
-            border: 1px solid rgba(200, 150, 80, 0.1);
-            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(200, 50, 30, 0.05);
+            border: 1px solid rgba(200, 150, 80, 0.08);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.6);
             transition: all 0.3s ease;
         }
 
         .category:hover {
-            box-shadow: 0 16px 70px rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(200, 50, 30, 0.08);
+            box-shadow: 0 16px 70px rgba(0, 0, 0, 0.8);
         }
 
         .category h2 {
             font-family: 'Fredoka One', 'Impact', cursive;
             font-size: 2.4rem;
             color: #f0d8b0;
-            text-shadow: 0 2px 15px rgba(200, 80, 30, 0.3);
-            border-bottom: 2px solid rgba(200, 100, 50, 0.15);
+            text-shadow: 0 2px 15px rgba(200, 80, 30, 0.2);
+            border-bottom: 2px solid rgba(200, 100, 50, 0.1);
             padding-bottom: 14px;
             margin-bottom: 25px;
             display: flex;
@@ -382,24 +437,24 @@
             margin-left: auto;
             font-size: 1.4rem;
             animation: twinkle 2s ease-in-out infinite;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
-        /* ===== GRILLE PRODUITS ===== */
+        /* ===== GRILLE ===== */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 28px;
         }
 
-        /* ===== CARTE PRODUIT ===== */
+        /* ===== CARTE ===== */
         .card {
-            background: rgba(20, 15, 8, 0.8);
+            background: rgba(18, 14, 8, 0.85);
             backdrop-filter: blur(4px);
             border-radius: 20px;
             padding: 18px 16px 22px;
             text-align: center;
-            border: 1px solid rgba(200, 150, 80, 0.08);
+            border: 1px solid rgba(200, 150, 80, 0.06);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             opacity: 0;
             transform: translateY(40px);
@@ -409,7 +464,6 @@
             overflow: hidden;
         }
 
-        /* Petite guirlande sur chaque carte */
         .card::before {
             content: '';
             position: absolute;
@@ -418,28 +472,19 @@
             right: 0;
             height: 2px;
             background: linear-gradient(90deg, transparent, #ffd700, #e64a2a, #ffd700, transparent);
-            opacity: 0.3;
+            opacity: 0.2;
             transition: all 0.5s ease;
         }
 
         .card:hover::before {
-            opacity: 0.8;
+            opacity: 0.7;
             height: 3px;
-            background: linear-gradient(90deg, transparent, #ffd700, #e64a2a, #ff6b4a, #ffd700, transparent);
         }
 
-        .card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-        .card:nth-child(2) {
-            animation-delay: 0.25s;
-        }
-        .card:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        .card:nth-child(4) {
-            animation-delay: 0.55s;
-        }
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.25s; }
+        .card:nth-child(3) { animation-delay: 0.4s; }
+        .card:nth-child(4) { animation-delay: 0.55s; }
 
         @keyframes fadeInUp {
             0% {
@@ -454,9 +499,9 @@
 
         .card:hover {
             transform: translateY(-12px) scale(1.02);
-            border-color: rgba(200, 100, 50, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(200, 50, 30, 0.05);
-            background: rgba(30, 22, 12, 0.9);
+            border-color: rgba(200, 100, 50, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            background: rgba(28, 20, 10, 0.9);
         }
 
         .card .image-placeholder {
@@ -470,13 +515,12 @@
             color: #5a4a3a;
             font-size: 3.2rem;
             margin-bottom: 14px;
-            border: 1px solid rgba(200, 150, 80, 0.1);
+            border: 1px solid rgba(200, 150, 80, 0.06);
             transition: all 0.3s ease;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         }
 
         .card:hover .image-placeholder {
-            border-color: rgba(200, 100, 50, 0.2);
+            border-color: rgba(200, 100, 50, 0.15);
             background: radial-gradient(ellipse at center, #2a3a2a, #121a12);
             transform: scale(1.02);
         }
@@ -501,12 +545,12 @@
             font-size: 1.5rem;
             font-weight: 800;
             color: #ff6b4a;
-            text-shadow: 0 0 30px rgba(255, 80, 40, 0.2);
+            text-shadow: 0 0 30px rgba(255, 80, 40, 0.15);
             background: rgba(0, 0, 0, 0.3);
             display: inline-block;
             padding: 4px 24px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 100, 50, 0.1);
+            border: 1px solid rgba(255, 100, 50, 0.06);
         }
 
         .card .product-price small {
@@ -518,96 +562,56 @@
         /* ===== FOOTER ===== */
         footer {
             text-align: center;
-            color: #4a5a3a;
+            color: #3a4a3a;
             padding: 30px 0 10px;
             font-size: 0.85rem;
-            opacity: 0.5;
-            border-top: 1px solid rgba(200, 150, 80, 0.05);
+            opacity: 0.4;
+            border-top: 1px solid rgba(200, 150, 80, 0.03);
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.6rem;
-            }
-            .header .tree {
-                display: none;
-            }
-            .navbar {
-                flex-wrap: wrap;
-                gap: 10px;
-                border-radius: 30px;
-                padding: 12px 16px;
-            }
-            .navbar a {
-                font-size: 1rem;
-                padding: 6px 14px;
-            }
-            .category h2 {
-                font-size: 2rem;
-            }
-            .grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .header h1 { font-size: 2.6rem; }
+            .header .tree { display: none; }
+            .navbar { flex-wrap: wrap; gap: 10px; border-radius: 30px; padding: 12px 16px; }
+            .navbar a { font-size: 1rem; padding: 6px 14px; }
+            .category h2 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .header .slogan {
-                font-size: 0.9rem;
-                padding: 6px 18px;
-            }
-            .header::before,
-            .header::after {
-                display: none;
-            }
+            .grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2rem; }
+            .header .slogan { font-size: 0.9rem; padding: 6px 18px; }
+            .header::before, .header::after { display: none; }
         }
 
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a120a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a1a1a;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3a2a2a;
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #0a120a; }
+        ::-webkit-scrollbar-thumb { background: #2a1a1a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3a2a2a; }
     </style>
 </head>
 <body>
 
-    <!-- ===== FOND FORÊT PRÉHISTORIQUE ===== -->
+    <!-- ===== FOND : VRAIE FORÊT PRÉHISTORIQUE ===== -->
     <div class="background"></div>
 
-    <!-- ===== DINOSAURES EN FOND (GIF) ===== -->
+    <!-- ===== DINOSAURES EN FOND (GIF ANIMÉS) ===== -->
     <div class="dino-bg">
-        <!-- Brachiosaure -->
-        <img src="https://media.tenor.com/25j0WX2c_tkAAAAi/brontosaurus-dinosaur.gif" alt="Brachiosaure">
-        <!-- T-Rex -->
-        <img src="https://media.tenor.com/KsX8_CadrAwAAAAi/trex-dinosaur.gif" alt="T-Rex">
-        <!-- Ptérosaure -->
-        <img src="https://media.tenor.com/d6yFhEyt2VEAAAAi/pterodactyl-dinosaur.gif" alt="Ptérosaure">
-        <!-- Petit dino -->
-        <img src="https://media.tenor.com/LpDZv6Zv9_UAAAAi/dino-dinosaur.gif" alt="Petit dinosaure">
+        <img class="dino dino-1" src="https://media.tenor.com/25j0WX2c_tkAAAAi/brontosaurus-dinosaur.gif" alt="Brachiosaure">
+        <img class="dino dino-2" src="https://media.tenor.com/KsX8_CadrAwAAAAi/trex-dinosaur.gif" alt="T-Rex">
+        <img class="dino dino-3" src="https://media.tenor.com/d6yFhEyt2VEAAAAi/pterodactyl-dinosaur.gif" alt="Ptérosaure">
+        <img class="dino dino-4" src="https://media.tenor.com/LpDZv6Zv9_UAAAAi/dino-dinosaur.gif" alt="Petit dinosaure">
+        <img class="dino dino-5" src="https://media.tenor.com/KsX8_CadrAwAAAAi/trex-dinosaur.gif" alt="T-Rex 2">
     </div>
 
-    <!-- ===== FLOCONS DE NEIGE ===== -->
+    <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
     <!-- ===== CONTENU ===== -->
     <div class="content">
 
-        <!-- ===== HEADER ===== -->
         <header class="header">
             <div class="tree">🎄</div>
             <h1>
@@ -618,122 +622,101 @@
             </div>
         </header>
 
-        <!-- ===== NAVIGATION ===== -->
         <nav class="navbar">
             <a href="#librairie">📚 Librairie</a>
             <a href="#gaming">🎮 Gaming</a>
             <a href="#loisirs">🧶 Loisirs créatifs</a>
         </nav>
 
-        <!-- ============================================ -->
-        <!-- ===== CATÉGORIE : LIBRAIRIE ===== -->
-        <!-- ============================================ -->
+        <!-- LIBRAIRIE -->
         <section class="category" id="librairie">
             <h2>
                 <span class="emoji-cat">📚</span> Librairie
                 <span class="christmas-light">✦</span>
             </h2>
             <div class="grid">
-
                 <div class="card">
                     <div class="image-placeholder">📘</div>
                     <div class="product-name">Jungle Juice Tome 5</div>
                     <div class="product-desc">Webtoon coréen — l'aventure continue !</div>
                     <div class="product-price">14.99 <small>€</small></div>
                 </div>
-
                 <div class="card">
                     <div class="image-placeholder">📕</div>
                     <div class="product-name">Demon Slave Tome 18</div>
                     <div class="product-desc">Manga de Takahiro — à partir du tome 18</div>
                     <div class="product-price">7.30 <small>€</small></div>
                 </div>
-
             </div>
         </section>
 
-        <!-- ============================================ -->
-        <!-- ===== CATÉGORIE : GAMING ===== -->
-        <!-- ============================================ -->
+        <!-- GAMING -->
         <section class="category" id="gaming">
             <h2>
                 <span class="emoji-cat">🎮</span> Gaming
                 <span class="christmas-light">✦</span>
             </h2>
             <div class="grid">
-
                 <div class="card">
                     <div class="image-placeholder">🎯</div>
                     <div class="product-name">Echoes of Aincrad</div>
                     <div class="product-desc">Jeux vidéo PS5 — nouvelle aventure épique</div>
                     <div class="product-price">69.99 <small>€</small></div>
                 </div>
-
                 <div class="card">
                     <div class="image-placeholder">🏎️</div>
                     <div class="product-name">GTA VI</div>
                     <div class="product-desc">Jeux vidéo PS5 — le retour de la légende</div>
                     <div class="product-price">79.99 <small>€</small></div>
                 </div>
-
             </div>
         </section>
 
-        <!-- ============================================ -->
-        <!-- ===== CATÉGORIE : LOISIRS CRÉATIFS ===== -->
-        <!-- ============================================ -->
+        <!-- LOISIRS CRÉATIFS -->
         <section class="category" id="loisirs">
             <h2>
                 <span class="emoji-cat">🧶</span> Loisirs créatifs
                 <span class="christmas-light">✦</span>
             </h2>
             <div class="grid">
-
                 <div class="card">
                     <div class="image-placeholder">🏛️</div>
                     <div class="product-name">LEGO Architecture Notre-Dame</div>
                     <div class="product-desc">Set LEGO 21061 — La cathédrale en briques</div>
                     <div class="product-price">160.99 <small>€</small></div>
                 </div>
-
                 <div class="card">
                     <div class="image-placeholder">🦖</div>
                     <div class="product-name">Fossiles T-Rex LEGO</div>
                     <div class="product-desc">Set LEGO — Le Tyrannosaurus rex à monter</div>
                     <div class="product-price">249.99 <small>€</small></div>
                 </div>
-
                 <div class="card">
                     <div class="image-placeholder">🎨</div>
                     <div class="product-name">Puzzle Totoro</div>
                     <div class="product-desc">Puzzle vitrail 126 pièces — My Neighbor Totoro</div>
                     <div class="product-price">30.00 <small>€</small></div>
                 </div>
-
             </div>
         </section>
 
-        <!-- ===== FOOTER ===== -->
         <footer>
             🦕 La Forêt du Rex Noël • Catalogue cadeaux 2026 • Fait avec ❤️
         </footer>
 
     </div>
 
-    <!-- ===== SCRIPT FLOCONS ===== -->
     <script>
         (function() {
             const container = document.getElementById('snowflakes');
             const flakes = ['❄', '❅', '❆', '✦', '•'];
-            const nbFlakes = 60;
-
-            for (let i = 0; i < nbFlakes; i++) {
+            for (let i = 0; i < 60; i++) {
                 const flake = document.createElement('div');
                 flake.className = 'snowflake';
                 flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
                 flake.style.left = Math.random() * 100 + '%';
                 flake.style.fontSize = (0.6 + Math.random() * 2) + 'rem';
-                flake.style.opacity = 0.2 + Math.random() * 0.5;
+                flake.style.opacity = 0.2 + Math.random() * 0.4;
                 flake.style.animationDuration = (10 + Math.random() * 20) + 's';
                 flake.style.animationDelay = (Math.random() * 25) + 's';
                 container.appendChild(flake);
