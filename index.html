@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
+        /* ===== VOTRE CODE CSS EXISTANT ===== */
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== FOND ===== */
         .background {
             position: fixed;
             top: 0;
@@ -41,8 +41,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-           background: url('https://images.unsplash.com/photo-1517299321609-52687d1bc55a?w=1920&q=80') center/cover no-repeat;
-            opacity: 0.6;
+            background: url('https://images.unsplash.com/photo-1517299321609-52687d1bc55a?w=1920&q=80') center/cover no-repeat;
+            opacity: 0.7;
             z-index: -1;
             filter: brightness(0.4) saturate(0.8) contrast(1.1);
         }
@@ -54,11 +54,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, rgba(10, 30, 10, 0.3) 0%, rgba(0, 5, 0, 0.8) 100%);
+            background: radial-gradient(ellipse at center, rgba(10, 30, 10, 0.2) 0%, rgba(0, 5, 0, 0.8) 100%);
             z-index: -1;
         }
 
-        /* ===== FLOCONS ===== */
         .snowflakes {
             position: fixed;
             top: 0;
@@ -80,17 +79,10 @@
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-20px) rotate(0deg);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(110vh) rotate(720deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* ===== CONTENU ===== */
         .content {
             position: relative;
             z-index: 2;
@@ -99,7 +91,6 @@
             padding: 15px;
         }
 
-        /* ===== HEADER ===== */
         .header {
             text-align: center;
             padding: 35px 15px 25px;
@@ -198,7 +189,6 @@
             50% { opacity: 0.4; transform: scale(1.1); }
         }
 
-        /* ===== BOUTON RETOUR ===== */
         .back-btn {
             display: inline-block;
             background: rgba(200, 50, 30, 0.25);
@@ -224,7 +214,6 @@
             display: none;
         }
 
-        /* ===== GRILLE CATÉGORIES ===== */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -301,7 +290,6 @@
             transform: translateX(8px);
         }
 
-        /* ===== PRODUITS ===== */
         .products-section {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -342,7 +330,6 @@
             gap: 20px;
         }
 
-        /* ===== CARTE PRODUIT ===== */
         .card {
             background: rgba(18, 14, 8, 0.85);
             backdrop-filter: blur(4px);
@@ -432,14 +419,14 @@
             color: #a89878;
         }
 
-        /* ===== ÉCRAN DE CHARGEMENT (T-REX) ===== */
+        /* ===== ÉCRAN DE CHARGEMENT (VÉLOCIRAPTOR) ===== */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.92);
             backdrop-filter: blur(10px);
             z-index: 9999;
             display: none;
@@ -467,16 +454,12 @@
             width: 280px;
             max-width: 80vw;
             border-radius: 20px;
-            box-shadow: 0 0 80px rgba(230, 74, 42, 0.2);
+            box-shadow: 0 0 80px rgba(230, 74, 42, 0.25);
         }
 
         @keyframes trexRoar {
-            0% {
-                transform: scale(1) rotate(-2deg);
-            }
-            100% {
-                transform: scale(1.05) rotate(2deg);
-            }
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.05) rotate(2deg); }
         }
 
         .loading-screen .roar-text {
@@ -489,14 +472,8 @@
         }
 
         @keyframes roarPulse {
-            0% {
-                transform: scale(1);
-                text-shadow: 0 0 20px rgba(230, 74, 42, 0.3);
-            }
-            100% {
-                transform: scale(1.05);
-                text-shadow: 0 0 60px rgba(230, 74, 42, 0.6);
-            }
+            0% { transform: scale(1); text-shadow: 0 0 20px rgba(230, 74, 42, 0.3); }
+            100% { transform: scale(1.05); text-shadow: 0 0 60px rgba(230, 74, 42, 0.6); }
         }
 
         .loading-screen .loading-bar {
@@ -521,7 +498,6 @@
             100% { width: 100%; }
         }
 
-        /* ===== FOOTER ===== */
         footer {
             text-align: center;
             color: #3a4a3a;
@@ -532,7 +508,6 @@
             margin-top: 20px;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header h1 { font-size: 2.4rem; }
             .header .tree { display: none; }
@@ -571,12 +546,12 @@
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
-    <!-- ===== ÉCRAN DE CHARGEMENT (T-REX) ===== -->
+    <!-- ===== ÉCRAN DE CHARGEMENT (VÉLOCIRAPTOR) ===== -->
     <div class="loading-screen" id="loadingScreen">
         <div class="trex-container">
-            <!-- T-Rex qui hurle (NOUVEAU LIEN QUI MARCHE) -->
-            <img class="trex-gif" src="https://media.tenor.com/8vUu4C5lE0AAAAi/t-rex-roar.gif" alt="T-Rex qui hurle">
-            <div class="roar-text">🦖 RAAAAAWR ! 🎄</div>
+            <!-- Vélociraptor en colère (GIPHY) -->
+            <img class="trex-gif" src="https://media.giphy.com/media/5kLEgnNWvI1hCgbvbY/giphy.gif" alt="Vélociraptor en colère">
+            <div class="roar-text">🦎 RAAAAAWR ! 🎄</div>
             <div class="loading-bar">
                 <div class="fill"></div>
             </div>
@@ -688,22 +663,75 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
+        // JOUER LE SON DU VÉLOCIRAPTOR (API Web Audio)
+        // ==========================================
+        function playVelociraptorSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Paramètres du son
+                const duration = 0.6;
+                const sampleRate = audioCtx.sampleRate;
+                const bufferSize = sampleRate * duration;
+                const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+                const data = buffer.getChannelData(0);
+
+                // Générer un son strident de vélociraptor
+                for (let i = 0; i < bufferSize; i++) {
+                    const t = i / bufferSize;
+                    
+                    // Enveloppe : attaque rapide, décroissance
+                    const envelope = Math.exp(-t * 8) * (1 - Math.exp(-t * 30));
+                    
+                    // Fréquence modulée (effet de cri)
+                    const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
+                    const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
+                    
+                    // Bruit pour le côté "rauque"
+                    const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
+                    const noise2 = (Math.random() * 2 - 1) * 0.15 * (t * 3);
+                    
+                    // Ajouter des harmoniques pour plus de richesse
+                    const harmonic1 = Math.sin(2 * Math.PI * freq * 1.5 * t * sampleRate / sampleRate) * 0.2;
+                    const harmonic2 = Math.sin(2 * Math.PI * freq * 0.7 * t * sampleRate / sampleRate) * 0.2;
+                    
+                    data[i] = (carrier * 0.6 + noise + noise2 + harmonic1 + harmonic2) * envelope * 0.6;
+                    
+                    // Créer une pause pour l'effet "cri"
+                    if (i > bufferSize * 0.7) {
+                        data[i] *= 0.3;
+                    }
+                }
+
+                const source = audioCtx.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioCtx.destination);
+                source.start();
+            } catch (e) {
+                console.log('⚠️ Son du vélociraptor non disponible');
+            }
+        }
+
+        // ==========================================
         // CHARGER UNE CATÉGORIE
         // ==========================================
         function loadCategory(categoryKey) {
+            // Jouer le cri du vélociraptor
+            playVelociraptorSound();
+            
             // Afficher l'écran de chargement
             loadingScreen.classList.add('active');
 
             // Cacher les catégories
             categoriesContainer.style.display = 'none';
 
-            // Après 2 secondes, afficher les produits
+            // Après 1.8 secondes, afficher les produits
             setTimeout(() => {
                 loadingScreen.classList.remove('active');
                 displayProducts(categoryKey);
                 backBtn.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 2000);
+            }, 1800);
         }
 
         // ==========================================
