@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
-        /* ===== VOS STYLES EXISTANTS ===== */
+        /* ===== VOS STYLES (simplifiés) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -57,27 +57,20 @@
         /* ===== CONTENU ===== */
         .content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 15px; }
         .header { text-align: center; padding: 35px 15px 25px; background: rgba(8, 16, 8, 0.85); backdrop-filter: blur(8px); border-radius: 25px; margin-bottom: 30px; border: 2px solid rgba(200, 50, 30, 0.15); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7); position: relative; overflow: hidden; }
-        .header::before { content: '✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦'; position: absolute; top: 4px; left: 0; width: 100%; font-size: 0.5rem; color: #ffd700; opacity: 0.15; letter-spacing: 6px; animation: twinkle 3s ease-in-out infinite; pointer-events: none; white-space: nowrap; }
-        .header::after { content: '✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦'; position: absolute; bottom: 4px; left: 0; width: 100%; font-size: 0.5rem; color: #ffd700; opacity: 0.1; letter-spacing: 6px; animation: twinkle 4s ease-in-out infinite reverse; pointer-events: none; white-space: nowrap; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.4; } }
-        .header h1 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 3.2rem; color: #f5e6d3; text-shadow: 0 4px 30px rgba(200, 50, 20, 0.3); letter-spacing: 2px; position: relative; z-index: 1; }
-        .header h1 .rex { color: #e64a2a; text-shadow: 0 0 40px rgba(230, 74, 42, 0.25); }
-        .header h1 .noel { color: #ffd700; text-shadow: 0 0 40px rgba(255, 215, 0, 0.15); }
-        .header .slogan { font-size: 0.95rem; color: #b8a88a; margin-top: 10px; font-style: italic; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 6px 22px; border-radius: 40px; backdrop-filter: blur(4px); border: 1px solid rgba(200, 100, 50, 0.06); position: relative; z-index: 1; }
-        .header .tree { position: absolute; right: 15px; bottom: 10px; font-size: 2.2rem; opacity: 0.2; animation: treeGlow 3s ease-in-out infinite; z-index: 1; }
-        @keyframes treeGlow { 0%, 100% { opacity: 0.15; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.1); } }
+        .header h1 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 3.2rem; color: #f5e6d3; text-shadow: 0 4px 30px rgba(200, 50, 20, 0.3); letter-spacing: 2px; }
+        .header h1 .rex { color: #e64a2a; }
+        .header h1 .noel { color: #ffd700; }
+        .header .slogan { font-size: 0.95rem; color: #b8a88a; margin-top: 10px; font-style: italic; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 6px 22px; border-radius: 40px; }
 
-        .back-btn { display: inline-block; background: rgba(200, 50, 30, 0.25); color: #f0e0c8; border: 1px solid rgba(200, 100, 50, 0.15); padding: 8px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 15px; backdrop-filter: blur(4px); font-family: inherit; }
+        .back-btn { display: inline-block; background: rgba(200, 50, 30, 0.25); color: #f0e0c8; border: 1px solid rgba(200, 100, 50, 0.15); padding: 8px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 15px; font-family: inherit; }
         .back-btn:hover { background: rgba(200, 50, 30, 0.4); transform: scale(1.05); }
         .back-btn.hidden { display: none; }
 
         .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 15px; }
-        .category-card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(8px); border-radius: 25px; padding: 40px 20px; text-align: center; border: 2px solid rgba(200, 150, 80, 0.06); transition: all 0.4s ease; cursor: pointer; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; }
-        .category-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #ffd700, #e64a2a, #ffd700, transparent); opacity: 0; transition: all 0.5s ease; }
-        .category-card:hover::before { opacity: 0.6; }
+        .category-card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(8px); border-radius: 25px; padding: 40px 20px; text-align: center; border: 2px solid rgba(200, 150, 80, 0.06); transition: all 0.4s ease; cursor: pointer; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
         .category-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(200, 100, 50, 0.12); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); background: rgba(28, 20, 10, 0.92); }
         .category-card .cat-icon { font-size: 3.5rem; margin-bottom: 12px; display: block; }
-        .category-card .cat-name { font-family: 'Fredoka One', 'Impact', cursive; font-size: 1.8rem; color: #f0d8b0; text-shadow: 0 2px 15px rgba(200, 80, 30, 0.1); }
+        .category-card .cat-name { font-family: 'Fredoka One', 'Impact', cursive; font-size: 1.8rem; color: #f0d8b0; }
         .category-card .cat-desc { color: #a89878; margin-top: 6px; font-size: 0.85rem; }
         .category-card .cat-arrow { font-size: 1.6rem; margin-top: 12px; display: block; opacity: 0.25; transition: all 0.3s ease; }
         .category-card:hover .cat-arrow { opacity: 0.7; transform: translateX(8px); }
@@ -85,26 +78,20 @@
         .products-section { display: none; animation: fadeIn 0.4s ease; }
         .products-section.active { display: block; }
         @keyframes fadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
-        .products-section h2 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2rem; color: #f0d8b0; text-shadow: 0 2px 15px rgba(200, 80, 30, 0.1); border-bottom: 2px solid rgba(200, 100, 50, 0.06); padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .products-section h2 .light { margin-left: auto; font-size: 1rem; animation: twinkle 2s ease-in-out infinite; opacity: 0.3; }
+        .products-section h2 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2rem; color: #f0d8b0; border-bottom: 2px solid rgba(200, 100, 50, 0.06); padding-bottom: 12px; margin-bottom: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(4px); border-radius: 18px; padding: 14px 12px 18px; text-align: center; border: 1px solid rgba(200, 150, 80, 0.04); transition: all 0.4s ease; box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden; animation: fadeIn 0.5s ease forwards; }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #ffd700, #e64a2a, #ffd700, transparent); opacity: 0.1; transition: all 0.5s ease; }
-        .card:hover::before { opacity: 0.5; height: 3px; }
+        .card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(4px); border-radius: 18px; padding: 14px 12px 18px; text-align: center; border: 1px solid rgba(200, 150, 80, 0.04); transition: all 0.4s ease; box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4); animation: fadeIn 0.5s ease forwards; }
         .card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(200, 100, 50, 0.1); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); background: rgba(28, 20, 10, 0.9); }
-        .card .image-placeholder { width: 100%; height: 120px; background: radial-gradient(ellipse at center, #1a2a1a, #0a120a); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; margin-bottom: 10px; border: 1px solid rgba(200, 150, 80, 0.04); transition: all 0.3s ease; }
-        .card:hover .image-placeholder { border-color: rgba(200, 100, 50, 0.1); background: radial-gradient(ellipse at center, #2a3a2a, #121a12); }
+        .card .image-placeholder { width: 100%; height: 120px; background: radial-gradient(ellipse at center, #1a2a1a, #0a120a); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; margin-bottom: 10px; }
         .card .product-name { font-size: 1rem; font-weight: 700; color: #f0e0c8; margin-bottom: 3px; }
         .card .product-desc { font-size: 0.75rem; color: #a89878; margin-bottom: 6px; line-height: 1.3; min-height: 32px; }
-        .card .product-price { font-size: 1.2rem; font-weight: 800; color: #ff6b4a; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 3px 16px; border-radius: 30px; border: 1px solid rgba(255, 100, 50, 0.04); }
-        .card .product-price small { font-size: 0.7rem; font-weight: 400; color: #a89878; }
+        .card .product-price { font-size: 1.2rem; font-weight: 800; color: #ff6b4a; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 3px 16px; border-radius: 30px; }
 
-        /* ===== ÉCRAN DE CHARGEMENT RAPTOR ===== */
-        .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; animation: fadeInLoading 0.4s ease; }
+        /* ===== ÉCRAN DE CHARGEMENT ===== */
+        .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; }
         .loading-screen.active { display: flex; }
-        @keyframes fadeInLoading { 0% { opacity: 0; } 100% { opacity: 1; } }
         .loading-screen .raptor-container { text-align: center; animation: raptorRoar 0.6s ease-in-out infinite alternate; width: 90%; max-width: 800px; }
-        .loading-screen .raptor-gif { width: 100%; height: auto; max-height: 70vh; border-radius: 20px; box-shadow: 0 0 100px rgba(230, 74, 42, 0.3); object-fit: contain; }
+        .loading-screen .raptor-gif { width: 100%; height: auto; max-height: 70vh; border-radius: 20px; box-shadow: 0 0 100px rgba(230, 74, 42, 0.3); }
         @keyframes raptorRoar { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.03) rotate(2deg); } }
         .loading-screen .roar-text { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2.5rem; color: #ff6b4a; text-shadow: 0 0 50px rgba(230, 74, 42, 0.4); margin-top: 20px; animation: roarPulse 0.5s ease-in-out infinite alternate; }
         @keyframes roarPulse { 0% { transform: scale(1); text-shadow: 0 0 20px rgba(230, 74, 42, 0.3); } 100% { transform: scale(1.05); text-shadow: 0 0 60px rgba(230, 74, 42, 0.6); } }
@@ -112,7 +99,7 @@
         .loading-screen .loading-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #e64a2a, #ffd700); border-radius: 10px; animation: loadBar 1.8s ease-in-out forwards; }
         @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
 
-        /* ===== LECTEUR DE MUSIQUE JURASSIC PARK ===== */
+        /* ===== LECTEUR MUSIQUE ===== */
         .music-player {
             position: fixed;
             bottom: 20px;
@@ -127,16 +114,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.3s ease;
         }
-        .music-player:hover { border-color: rgba(200, 100, 50, 0.3); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8); }
         .music-player .play-btn {
             background: none;
             border: none;
             color: #f0e0c8;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             width: 36px;
             height: 36px;
             display: flex;
@@ -154,7 +138,6 @@
             background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             outline: none;
-            transition: all 0.3s ease;
         }
         .music-player .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -163,33 +146,13 @@
             border-radius: 50%;
             background: #e64a2a;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(230, 74, 42, 0.3);
         }
-        .music-player .volume-slider::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #e64a2a;
-            cursor: pointer;
-            border: none;
-        }
-        .music-player .music-label {
-            font-size: 0.7rem;
-            color: #a89878;
-            opacity: 0.6;
-            font-style: italic;
-        }
-        @media (max-width: 480px) {
-            .music-player { padding: 8px 12px; gap: 8px; }
-            .music-player .volume-slider { width: 40px; }
-            .music-player .music-label { display: none; }
-        }
+        .music-player .music-label { font-size: 0.7rem; color: #a89878; opacity: 0.6; }
+        @media (max-width: 480px) { .music-player { padding: 8px 12px; gap: 8px; } .music-player .volume-slider { width: 40px; } .music-player .music-label { display: none; } }
 
-        footer { text-align: center; color: #3a4a3a; padding: 25px 0 10px; font-size: 0.75rem; opacity: 0.3; border-top: 1px solid rgba(200, 150, 80, 0.03); margin-top: 20px; }
-
-        @media (max-width: 768px) { .header h1 { font-size: 2.4rem; } .header .tree { display: none; } .header::before, .header::after { display: none; } .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; } .category-card { padding: 30px 15px; } .category-card .cat-icon { font-size: 3rem; } .category-card .cat-name { font-size: 1.5rem; } .grid { grid-template-columns: 1fr 1fr; gap: 16px; } .loading-screen .roar-text { font-size: 2rem; } }
-        @media (max-width: 480px) { .categories-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } .header .slogan { font-size: 0.8rem; padding: 5px 14px; } .grid { grid-template-columns: 1fr; } .products-section h2 { font-size: 1.6rem; } .category-card { padding: 25px 15px; } .loading-screen .roar-text { font-size: 1.5rem; } }
-        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #0a120a; } ::-webkit-scrollbar-thumb { background: #2a1a1a; border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: #3a2a2a; }
+        footer { text-align: center; color: #3a4a3a; padding: 25px 0 10px; font-size: 0.75rem; opacity: 0.3; margin-top: 20px; }
+        @media (max-width: 768px) { .header h1 { font-size: 2.4rem; } .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; } .category-card { padding: 30px 15px; } }
+        @media (max-width: 480px) { .categories-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -200,32 +163,32 @@
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
-    <!-- ===== ÉCRAN DE CHARGEMENT RAPTOR ===== -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="raptor-container">
-            <img class="raptor-gif" src="https://media.giphy.com/media/5kLEgnNWvI1hCgbvbY/giphy.gif" alt="Vélociraptor en colère">
-            <div class="roar-text">🦎 RAAAAAWR ! 🎄</div>
-            <div class="loading-bar"><div class="fill"></div></div>
-        </div>
+    <!-- ===== LECTEUR MUSIQUE ===== -->
+    <div class="music-player">
+        <button class="play-btn" id="musicPlayBtn">▶️</button>
+        <input type="range" class="volume-slider" id="musicVolume" min="0" max="1" step="0.05" value="0.3">
+        <span class="music-label">🦕 Jurassic</span>
     </div>
 
-    <!-- ===== LECTEUR MUSIQUE JURASSIC PARK ===== -->
-    <div class="music-player" id="musicPlayer">
-        <button class="play-btn" id="musicPlayBtn" title="Jouer / Pause">▶️</button>
-        <input type="range" class="volume-slider" id="musicVolume" min="0" max="1" step="0.05" value="0.3">
-        <span class="music-label">🦕 Jurassic Park</span>
+    <!-- ===== ÉCRAN DE CHARGEMENT ===== -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="raptor-container">
+            <img class="raptor-gif" src="https://media.giphy.com/media/5kLEgnNWvI1hCgbvbY/giphy.gif" alt="Vélociraptor">
+            <div class="roar-text">🦎 RAAAAAWR !</div>
+            <div class="loading-bar"><div class="fill"></div></div>
+        </div>
     </div>
 
     <!-- ===== CONTENU ===== -->
     <div class="content">
         <header class="header">
-            <div class="tree">🎄</div>
             <h1>🦕 La Forêt du <span class="rex">Rex</span> <span class="noel">Noël</span> 🦖</h1>
             <div class="slogan">❄️ Le catalogue préhistorique des cadeaux de Noël — édition 2026</div>
         </header>
 
         <button class="back-btn hidden" id="backBtn" onclick="showCategories()">⬅️ Retour aux catégories</button>
 
+        <!-- CATÉGORIES -->
         <div id="categoriesContainer">
             <div class="categories-grid">
                 <div class="category-card" onclick="loadCategory('librairie')">
@@ -249,20 +212,18 @@
             </div>
         </div>
 
+        <!-- PRODUITS -->
         <div class="products-section" id="productsContainer">
-            <h2 id="categoryTitle">
-                <span id="catEmoji">📚</span>
-                <span id="catName">Librairie</span>
-                <span class="light">✦</span>
-            </h2>
+            <h2 id="categoryTitle">📚 Librairie</h2>
             <div class="grid" id="productsGrid"></div>
         </div>
-        <footer>🦕 La Forêt du Rex Noël • Catalogue cadeaux 2026 • Fait avec ❤️</footer>
+
+        <footer>🦕 La Forêt du Rex Noël • Catalogue 2026</footer>
     </div>
 
     <script>
         // ==========================================
-        // DONNÉES DES PRODUITS
+        // 1. LES PRODUITS
         // ==========================================
         const products = {
             librairie: {
@@ -293,158 +254,112 @@
         };
 
         // ==========================================
-        // RÉFÉRENCES
+        // 2. RÉFÉRENCES DOM
         // ==========================================
         const categoriesContainer = document.getElementById('categoriesContainer');
         const productsContainer = document.getElementById('productsContainer');
         const productsGrid = document.getElementById('productsGrid');
-        const catEmoji = document.getElementById('catEmoji');
-        const catName = document.getElementById('catName');
+        const categoryTitle = document.getElementById('categoryTitle');
         const backBtn = document.getElementById('backBtn');
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // LECTEUR MUSIQUE JURASSIC PARK
+        // 3. MUSIQUE
         // ==========================================
-        let backgroundMusic = null;
-        let musicPlaying = false;
+        let bgMusic = null;
+        let isMusicPlaying = false;
         const musicPlayBtn = document.getElementById('musicPlayBtn');
         const musicVolume = document.getElementById('musicVolume');
 
         function initMusic() {
             try {
-                // Version instrumentale épique de Jurassic Park (libre de droits)
-                backgroundMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-                backgroundMusic.loop = true;
-                backgroundMusic.volume = parseFloat(musicVolume.value) || 0.3;
-                
-                // Ne démarre pas automatiquement, attend le clic
-                musicPlayBtn.textContent = '▶️';
-                musicPlaying = false;
-            } catch (e) {
-                console.log('⚠️ Musique Jurassic Park non disponible');
-                musicPlayBtn.textContent = '🔇';
-            }
+                bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                bgMusic.loop = true;
+                bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
+            } catch(e) { console.log('Erreur musique'); }
         }
 
-        // Démarrer la musique au clic sur le bouton
         musicPlayBtn.addEventListener('click', function() {
-            if (!backgroundMusic) {
-                initMusic();
-                if (!backgroundMusic) return;
-            }
+            if (!bgMusic) initMusic();
+            if (!bgMusic) return;
             
-            if (musicPlaying) {
-                backgroundMusic.pause();
-                musicPlaying = false;
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
                 musicPlayBtn.textContent = '▶️';
             } else {
-                backgroundMusic.play().then(() => {
-                    musicPlaying = true;
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
                     musicPlayBtn.textContent = '⏸️';
                 }).catch(e => {
-                    console.log('Erreur lecture musique:', e);
-                    // Si erreur, on essaie de recréer l'audio
-                    try {
-                        backgroundMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-                        backgroundMusic.loop = true;
-                        backgroundMusic.volume = parseFloat(musicVolume.value) || 0.3;
-                        backgroundMusic.play().then(() => {
-                            musicPlaying = true;
+                    // Si erreur, on relance la musique
+                    initMusic();
+                    if (bgMusic) {
+                        bgMusic.play().then(() => {
+                            isMusicPlaying = true;
                             musicPlayBtn.textContent = '⏸️';
                         }).catch(e2 => console.log('Erreur 2:', e2));
-                    } catch(e2) {}
+                    }
                 });
             }
         });
 
-        // Contrôle du volume
         musicVolume.addEventListener('input', function() {
-            if (backgroundMusic) {
-                backgroundMusic.volume = parseFloat(this.value);
-            }
+            if (bgMusic) bgMusic.volume = parseFloat(this.value);
         });
 
         // ==========================================
-        // SON DU RAPTOR (FONCTIONNE À COUP SÛR)
+        // 4. SON DU RAPTOR
         // ==========================================
         let raptorAudio = null;
-        let raptorReady = false;
 
-        function prepareRaptorSound() {
+        function playRaptorSound() {
             try {
-                raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
-                raptorAudio.volume = 0.8;
-                raptorAudio.load();
-                raptorReady = true;
-            } catch (e) {
-                console.log('⚠️ Raptor audio non disponible');
-                raptorReady = false;
-            }
-        }
-
-        function playVelociraptorSound() {
-            // Si le son n'est pas prêt, on le prépare
-            if (!raptorReady || !raptorAudio) {
-                prepareRaptorSound();
-                if (!raptorReady) {
-                    // Son de secours synthétisé
-                    try {
-                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                        const duration = 0.6;
-                        const sampleRate = audioCtx.sampleRate;
-                        const bufferSize = sampleRate * duration;
-                        const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
-                        const data = buffer.getChannelData(0);
-                        for (let i = 0; i < bufferSize; i++) {
-                            const t = i / bufferSize;
-                            const envelope = Math.exp(-t * 10) * (1 - Math.exp(-t * 30));
-                            const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
-                            const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
-                            const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
-                            data[i] = (carrier * 0.6 + noise) * envelope * 0.5;
-                        }
-                        const source = audioCtx.createBufferSource();
-                        source.buffer = buffer;
-                        source.connect(audioCtx.destination);
-                        source.start();
-                    } catch (e2) { console.log('⚠️ Son de secours indisponible'); }
-                    return;
+                if (!raptorAudio) {
+                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                    raptorAudio.volume = 0.8;
+                    raptorAudio.load();
                 }
-            }
-
-            try {
                 raptorAudio.currentTime = 0;
-                const playPromise = raptorAudio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                        // Si le son est bloqué, on le rejoue après un clic
-                        document.addEventListener('click', function playOnClick() {
-                            if (raptorAudio) {
-                                raptorAudio.currentTime = 0;
-                                raptorAudio.play().catch(e => console.log('Erreur audio:', e));
-                            }
-                            document.removeEventListener('click', playOnClick);
-                        }, { once: true });
-                    });
-                }
-            } catch (e) {
-                console.log('Erreur lecture raptor:', e);
+                raptorAudio.play().catch(e => {
+                    // Si le son est bloqué, on le rejoue au prochain clic
+                    document.addEventListener('click', function playOnClick() {
+                        if (raptorAudio) {
+                            raptorAudio.currentTime = 0;
+                            raptorAudio.play().catch(e2 => console.log('Erreur audio:', e2));
+                        }
+                        document.removeEventListener('click', playOnClick);
+                    }, { once: true });
+                });
+            } catch(e) {
+                console.log('Erreur raptor:', e);
+                // Son de secours
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < data.length; i++) {
+                        data[i] = (Math.random() * 2 - 1) * 0.3 * Math.exp(-i / (ctx.sampleRate * 0.15));
+                    }
+                    const source = ctx.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(ctx.destination);
+                    source.start();
+                } catch(e2) {}
             }
         }
 
         // ==========================================
-        // FONCTIONS PRINCIPALES
+        // 5. FONCTIONS PRINCIPALES
         // ==========================================
         function loadCategory(categoryKey) {
             // Joue le cri du raptor
-            playVelociraptorSound();
+            playRaptorSound();
             
             // Affiche l'écran de chargement
             loadingScreen.classList.add('active');
             categoriesContainer.style.display = 'none';
 
-            // Après 2 secondes, affiche les produits
             setTimeout(() => {
                 loadingScreen.classList.remove('active');
                 displayProducts(categoryKey);
@@ -456,9 +371,10 @@
         function displayProducts(categoryKey) {
             const data = products[categoryKey];
             if (!data) return;
-            catEmoji.textContent = data.emoji;
-            catName.textContent = data.name;
+            
+            categoryTitle.innerHTML = `${data.emoji} ${data.name}`;
             productsGrid.innerHTML = '';
+            
             data.items.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -471,6 +387,7 @@
                 `;
                 productsGrid.appendChild(card);
             });
+            
             productsContainer.classList.add('active');
         }
 
@@ -479,11 +396,42 @@
             categoriesContainer.style.display = 'block';
             backBtn.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (raptorAudio) {
-                raptorAudio.pause();
-                raptorAudio.currentTime = 0;
-            }
         }
 
         // ==========================================
-        // FL
+        // 6. FLOCONS
+        // ==========================================
+        (function() {
+            const container = document.getElementById('snowflakes');
+            const flakes = ['❄', '❅', '❆', '✦', '•'];
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.fontSize = (0.5 + Math.random() * 1.6) + 'rem';
+                flake.style.opacity = 0.15 + Math.random() * 0.3;
+                flake.style.animationDuration = (10 + Math.random() * 16) + 's';
+                flake.style.animationDelay = (Math.random() * 18) + 's';
+                container.appendChild(flake);
+            }
+        })();
+
+        // ==========================================
+        // 7. PRÉPARATION AUDIO
+        // ==========================================
+        // On prépare le son du raptor au premier clic sur la page
+        document.addEventListener('click', function prepareAudio() {
+            if (!raptorAudio) {
+                try {
+                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                    raptorAudio.volume = 0.8;
+                    raptorAudio.load();
+                } catch(e) {}
+            }
+            document.removeEventListener('click', prepareAudio);
+        }, { once: true });
+    </script>
+
+</body>
+</html>
