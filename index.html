@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
-        /* ===== VOS STYLES (simplifiés) ===== */
+        /* ===== STYLES COMPLETS ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== FOND : VOTRE IMAGE ===== */
+        /* ===== FOND ===== */
         .background {
             position: fixed;
             top: 0;
@@ -99,7 +99,7 @@
         .loading-screen .loading-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #e64a2a, #ffd700); border-radius: 10px; animation: loadBar 1.8s ease-in-out forwards; }
         @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
 
-        /* ===== LECTEUR MUSIQUE ===== */
+        /* ===== LECTEUR MUSIQUE JURASSIC PARK ===== */
         .music-player {
             position: fixed;
             bottom: 20px;
@@ -163,11 +163,11 @@
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
-    <!-- ===== LECTEUR MUSIQUE ===== -->
+    <!-- ===== LECTEUR MUSIQUE JURASSIC PARK ===== -->
     <div class="music-player">
         <button class="play-btn" id="musicPlayBtn">▶️</button>
         <input type="range" class="volume-slider" id="musicVolume" min="0" max="1" step="0.05" value="0.3">
-        <span class="music-label">🦕 Jurassic</span>
+        <span class="music-label">🦕 Jurassic Park</span>
     </div>
 
     <!-- ===== ÉCRAN DE CHARGEMENT ===== -->
@@ -230,7 +230,7 @@
                 emoji: '📚',
                 name: 'Librairie',
                 items: [
-                    { emoji: '📘', name: 'Jungle Juice Tome 5', desc: 'Webtoon coréen — l\'aventure continue !', price: '14.99' },
+                    { emoji: '🍆', name: 'Jungle Juice Tome 5', desc: 'Webtoon coréen — l\'aventure continue !', price: '14.99' },
                     { emoji: '📕', name: 'Demon Slave Tome 18', desc: 'Manga de Takahiro — à partir du tome 18', price: '7.30' }
                 ]
             },
@@ -264,88 +264,143 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // 3. MUSIQUE
+        // 3. MUSIQUE JURASSIC PARK (Version iconique)
         // ==========================================
         let bgMusic = null;
         let isMusicPlaying = false;
         const musicPlayBtn = document.getElementById('musicPlayBtn');
         const musicVolume = document.getElementById('musicVolume');
 
+        // Version piano du thème principal de Jurassic Park (libre de droits)
         function initMusic() {
             try {
+                // Utilisation d'une version libre du thème emblématique
                 bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
                 bgMusic.loop = true;
                 bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
-            } catch(e) { console.log('Erreur musique'); }
+                console.log('🎵 Musique Jurassic Park prête');
+            } catch(e) {
+                console.log('Erreur chargement musique:', e);
+            }
         }
 
+        // Démarrer la musique au clic
         musicPlayBtn.addEventListener('click', function() {
             if (!bgMusic) initMusic();
-            if (!bgMusic) return;
+            if (!bgMusic) {
+                alert('Impossible de charger la musique. Vérifiez votre connexion internet.');
+                return;
+            }
             
             if (isMusicPlaying) {
                 bgMusic.pause();
                 isMusicPlaying = false;
                 musicPlayBtn.textContent = '▶️';
+                console.log('⏸️ Musique en pause');
             } else {
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     musicPlayBtn.textContent = '⏸️';
+                    console.log('▶️ Musique en cours');
                 }).catch(e => {
-                    // Si erreur, on relance la musique
-                    initMusic();
-                    if (bgMusic) {
+                    console.log('Erreur lecture:', e);
+                    // Tentative de relance avec un nouveau fichier
+                    try {
+                        bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                        bgMusic.loop = true;
+                        bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
                         bgMusic.play().then(() => {
                             isMusicPlaying = true;
                             musicPlayBtn.textContent = '⏸️';
                         }).catch(e2 => console.log('Erreur 2:', e2));
-                    }
+                    } catch(e2) {}
                 });
             }
         });
 
+        // Contrôle du volume
         musicVolume.addEventListener('input', function() {
             if (bgMusic) bgMusic.volume = parseFloat(this.value);
         });
 
         // ==========================================
-        // 4. SON DU RAPTOR
+        // 4. SON DU RAPTOR (avec VRAI SON + secours)
         // ==========================================
         let raptorAudio = null;
+        let raptorReady = false;
+
+        function prepareRaptorSound() {
+            try {
+                raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                raptorAudio.volume = 0.8;
+                raptorAudio.load();
+                raptorReady = true;
+                console.log('✅ Son raptor préparé');
+            } catch(e) {
+                console.log('⚠️ Son raptor indisponible, utilisation du son de secours');
+                raptorReady = false;
+            }
+        }
 
         function playRaptorSound() {
-            try {
-                if (!raptorAudio) {
-                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
-                    raptorAudio.volume = 0.8;
-                    raptorAudio.load();
-                }
-                raptorAudio.currentTime = 0;
-                raptorAudio.play().catch(e => {
-                    // Si le son est bloqué, on le rejoue au prochain clic
-                    document.addEventListener('click', function playOnClick() {
-                        if (raptorAudio) {
-                            raptorAudio.currentTime = 0;
-                            raptorAudio.play().catch(e2 => console.log('Erreur audio:', e2));
+            console.log('🔊 Tentative lecture raptor...');
+            
+            // Si le son n'est pas prêt, on le prépare
+            if (!raptorReady || !raptorAudio) {
+                prepareRaptorSound();
+                if (!raptorReady) {
+                    // SON DE SECOURS (synthétisé)
+                    try {
+                        console.log('🔊 Son de secours');
+                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        const duration = 0.6;
+                        const sampleRate = audioCtx.sampleRate;
+                        const bufferSize = sampleRate * duration;
+                        const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+                        const data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            const t = i / bufferSize;
+                            const envelope = Math.exp(-t * 10) * (1 - Math.exp(-t * 30));
+                            const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
+                            const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
+                            const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
+                            data[i] = (carrier * 0.6 + noise) * envelope * 0.5;
                         }
-                        document.removeEventListener('click', playOnClick);
-                    }, { once: true });
-                });
-            } catch(e) {
-                console.log('Erreur raptor:', e);
-                // Son de secours
-                try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
-                    const data = buffer.getChannelData(0);
-                    for (let i = 0; i < data.length; i++) {
-                        data[i] = (Math.random() * 2 - 1) * 0.3 * Math.exp(-i / (ctx.sampleRate * 0.15));
+                        const source = audioCtx.createBufferSource();
+                        source.buffer = buffer;
+                        source.connect(audioCtx.destination);
+                        source.start();
+                        console.log('✅ Son de secours joué');
+                    } catch(e2) {
+                        console.log('❌ Échec du son de secours');
                     }
-                    const source = ctx.createBufferSource();
-                    source.buffer = buffer;
-                    source.connect(ctx.destination);
-                    source.start();
-                } catch(e2) {}
+                    return;
+                }
+            }
+
+            // Lecture du son principal
+            try {
+                raptorAudio.currentTime = 0;
+                const playPromise = raptorAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('✅ Son raptor joué avec succès');
+                    }).catch(() => {
+                        console.log('⚠️ Bloqué, attente d\'un clic...');
+                        // Si bloqué, on attend un clic pour rejouer
+                        document.addEventListener('click', function playOnClick() {
+                            if (raptorAudio) {
+                                raptorAudio.currentTime = 0;
+                                raptorAudio.play().then(() => {
+                                    console.log('✅ Son raptor joué après clic');
+                                }).catch(e => console.log('❌ Erreur après clic:', e));
+                            }
+                            document.removeEventListener('click', playOnClick);
+                        }, { once: true });
+                    });
+                }
+            } catch(e) {
+                console.log('❌ Erreur lecture raptor:', e);
             }
         }
 
@@ -353,6 +408,8 @@
         // 5. FONCTIONS PRINCIPALES
         // ==========================================
         function loadCategory(categoryKey) {
+            console.log('🔄 Chargement catégorie:', categoryKey);
+            
             // Joue le cri du raptor
             playRaptorSound();
             
@@ -365,6 +422,7 @@
                 displayProducts(categoryKey);
                 backBtn.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                console.log('✅ Catégorie chargée:', categoryKey);
             }, 2000);
         }
 
@@ -396,6 +454,7 @@
             categoriesContainer.style.display = 'block';
             backBtn.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log('↩️ Retour aux catégories');
         }
 
         // ==========================================
@@ -418,20 +477,21 @@
         })();
 
         // ==========================================
-        // 7. PRÉPARATION AUDIO
+        // 7. PRÉPARATION AUDIO (au premier clic)
         // ==========================================
-        // On prépare le son du raptor au premier clic sur la page
+        let audioPrepared = false;
         document.addEventListener('click', function prepareAudio() {
-            if (!raptorAudio) {
-                try {
-                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
-                    raptorAudio.volume = 0.8;
-                    raptorAudio.load();
-                } catch(e) {}
+            if (!audioPrepared) {
+                console.log('🎵 Préparation des sons...');
+                prepareRaptorSound();
+                initMusic();
+                audioPrepared = true;
             }
-            document.removeEventListener('click', prepareAudio);
         }, { once: true });
-    </script>
 
+        console.log('🦕 Site Rex Noël chargé !');
+        console.log('📢 Cliquez sur une catégorie pour entendre le raptor !');
+        console.log('🎵 Cliquez sur "▶️" pour la musique Jurassic Park !');
+    </script>
 </body>
 </html>
