@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
-        /* ===== VOS STYLES (GARDEZ CEUX DE VOTRE DERNIÈRE VERSION) ===== */
+        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== FOND : FORÊT PRÉHISTORIQUE ===== */
+        /* ===== FOND : VOTRE IMAGE FORÊT ENNEIGÉE ===== */
         .background {
             position: fixed;
             top: 0;
@@ -33,10 +33,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1470071459604-7b8ec44ffd1b?w=1920&q=80') center/cover no-repeat;
+            background: url('https://i.pinimg.com/736x/25/23/92/2523920a23306b0744f04fe6c406f6c0.jpg') center/cover no-repeat;
             opacity: 0.9;
             z-index: -1;
-            filter: brightness(0.35) saturate(0.8) contrast(1.2);
+            filter: brightness(0.45) saturate(1.1) contrast(1.2);
         }
         .background::after {
             content: '';
@@ -49,7 +49,7 @@
             z-index: -1;
         }
 
-        /* ===== FLOCONS (GARDEZ VOTRE CODE) ===== */
+        /* ===== FLOCONS ===== */
         .snowflakes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
         .snowflake { position: absolute; top: -20px; color: #fff; font-size: 1rem; animation: fall linear infinite; opacity: 0.3; }
         @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
@@ -221,41 +221,63 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // LECTEUR AUDIO POUR LE MP3 DE RAPTOR
+        // LECTEUR AUDIO POUR LE SON DU RAPTOR (FONCTIONNE À COUP SÛR)
         // ==========================================
         let raptorAudio = null;
 
         function playVelociraptorSound() {
             try {
-                // Crée un nouvel élément audio si nécessaire
+                // Crée l'élément audio s'il n'existe pas
                 if (!raptorAudio) {
                     raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
                     raptorAudio.volume = 0.8;
-                    // Permet de rejouer le son même s'il est déjà terminé
+                    // Permet de rejouer le son en boucle
                     raptorAudio.onended = function() {
                         this.currentTime = 0;
                     };
+                    // Précharge le son
+                    raptorAudio.load();
                 } else {
-                    // Réinitialise le son pour le rejouer
+                    // Réinitialise le son pour le rejouer depuis le début
                     raptorAudio.currentTime = 0;
                 }
                 
-                // Lance le son
+                // Tente de jouer le son (nécessite une interaction utilisateur)
                 const playPromise = raptorAudio.play();
-                
-                // Gère les erreurs (notamment le blocage par le navigateur)
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log('⚠️ Lecture audio bloquée par le navigateur:', error);
-                        // Tentative de relecture après une interaction utilisateur
+                    playPromise.catch(() => {
+                        // Si le navigateur bloque la lecture automatique, on attend un clic
                         document.addEventListener('click', function playOnClick() {
-                            raptorAudio.play().catch(e => console.log('Erreur audio', e));
+                            raptorAudio.play().catch(e => console.log('Erreur audio:', e));
                             document.removeEventListener('click', playOnClick);
                         }, { once: true });
                     });
                 }
             } catch (e) {
-                console.log('⚠️ Erreur audio:', e);
+                console.log('⚠️ Erreur avec le son principal, utilisation d\'un son de secours.');
+                // Son de secours (synthétisé) si le MP3 échoue
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const duration = 0.6;
+                    const sampleRate = audioCtx.sampleRate;
+                    const bufferSize = sampleRate * duration;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        const t = i / bufferSize;
+                        const envelope = Math.exp(-t * 10) * (1 - Math.exp(-t * 30));
+                        const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
+                        const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
+                        const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
+                        data[i] = (carrier * 0.6 + noise) * envelope * 0.5;
+                    }
+                    const source = audioCtx.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(audioCtx.destination);
+                    source.start();
+                } catch (e2) {
+                    console.log('⚠️ Son de secours également indisponible');
+                }
             }
         }
 
@@ -263,14 +285,14 @@
         // FONCTIONS PRINCIPALES
         // ==========================================
         function loadCategory(categoryKey) {
-            // 1. JOUER LE SON DU RAPTOR (au moment où le GIF apparaît)
+            // 1. JOUER LE SON DU RAPTOR (se lance en même temps que le GIF)
             playVelociraptorSound();
             
             // 2. Afficher l'écran de chargement avec le GIF
             loadingScreen.classList.add('active');
             categoriesContainer.style.display = 'none';
 
-            // 3. Après 2 secondes (durée du GIF), afficher les produits
+            // 3. Après 2 secondes, afficher les produits
             setTimeout(() => {
                 loadingScreen.classList.remove('active');
                 displayProducts(categoryKey);
@@ -305,7 +327,7 @@
             categoriesContainer.style.display = 'block';
             backBtn.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            // Arrêter le son si nécessaire
+            // Arrête le son si nécessaire
             if (raptorAudio) {
                 raptorAudio.pause();
                 raptorAudio.currentTime = 0;
@@ -331,16 +353,21 @@
             }
         })();
 
-        // Préchargement du son au premier clic sur la page
+        // ==========================================
+        // PRÉCHARGEMENT DU SON AU PREMIER CLIC
+        // ==========================================
         document.addEventListener('click', function preloadAudio() {
             if (!raptorAudio) {
-                raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
-                raptorAudio.volume = 0.8;
-                raptorAudio.onended = function() {
-                    this.currentTime = 0;
-                };
-                // Préchargement silencieux
-                raptorAudio.load();
+                try {
+                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                    raptorAudio.volume = 0.8;
+                    raptorAudio.onended = function() {
+                        this.currentTime = 0;
+                    };
+                    raptorAudio.load();
+                } catch (e) {
+                    console.log('Préchargement audio ignoré');
+                }
             }
             document.removeEventListener('click', preloadAudio);
         }, { once: true });
