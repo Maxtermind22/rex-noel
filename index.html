@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦕 La Forêt du Rex Noël</title>
     <style>
-        /* ===== VOS STYLES (GARDEZ CEUX QUE VOUS AVIEZ) ===== */
+        /* ===== VOS STYLES (GARDEZ CEUX DE VOTRE DERNIÈRE VERSION) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -221,39 +221,41 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // SON RAPTOR AMÉLIORÉ (en attendant votre MP3)
+        // LECTEUR AUDIO POUR LE MP3 DE RAPTOR
         // ==========================================
+        let raptorAudio = null;
+
         function playVelociraptorSound() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const duration = 0.8;
-                const sampleRate = audioCtx.sampleRate;
-                const bufferSize = sampleRate * duration;
-                const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
-                const data = buffer.getChannelData(0);
-
-                for (let i = 0; i < bufferSize; i++) {
-                    const t = i / bufferSize;
-                    const envelope = Math.exp(-t * 12) * (1 - Math.exp(-t * 50));
-                    const freq = 2200 + 1000 * Math.sin(t * 40) + 600 * Math.sin(t * 80);
-                    const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
-                    const noise = (Math.random() * 2 - 1) * 0.35 * (1 - t * 1.8);
-                    const noise2 = (Math.random() * 2 - 1) * 0.15 * (t * 5);
-                    const harmonic1 = Math.sin(2 * Math.PI * freq * 1.8 * t * sampleRate / sampleRate) * 0.2;
-                    const harmonic2 = Math.sin(2 * Math.PI * freq * 0.5 * t * sampleRate / sampleRate) * 0.15;
-                    
-                    data[i] = (carrier * 0.5 + noise + noise2 + harmonic1 + harmonic2) * envelope * 0.5;
-                    if (i > bufferSize * 0.78) {
-                        data[i] *= 0.1;
-                    }
+                // Crée un nouvel élément audio si nécessaire
+                if (!raptorAudio) {
+                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                    raptorAudio.volume = 0.8;
+                    // Permet de rejouer le son même s'il est déjà terminé
+                    raptorAudio.onended = function() {
+                        this.currentTime = 0;
+                    };
+                } else {
+                    // Réinitialise le son pour le rejouer
+                    raptorAudio.currentTime = 0;
                 }
-
-                const source = audioCtx.createBufferSource();
-                source.buffer = buffer;
-                source.connect(audioCtx.destination);
-                source.start();
+                
+                // Lance le son
+                const playPromise = raptorAudio.play();
+                
+                // Gère les erreurs (notamment le blocage par le navigateur)
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log('⚠️ Lecture audio bloquée par le navigateur:', error);
+                        // Tentative de relecture après une interaction utilisateur
+                        document.addEventListener('click', function playOnClick() {
+                            raptorAudio.play().catch(e => console.log('Erreur audio', e));
+                            document.removeEventListener('click', playOnClick);
+                        }, { once: true });
+                    });
+                }
             } catch (e) {
-                console.log('⚠️ Son non disponible');
+                console.log('⚠️ Erreur audio:', e);
             }
         }
 
@@ -261,10 +263,14 @@
         // FONCTIONS PRINCIPALES
         // ==========================================
         function loadCategory(categoryKey) {
+            // 1. JOUER LE SON DU RAPTOR (au moment où le GIF apparaît)
             playVelociraptorSound();
+            
+            // 2. Afficher l'écran de chargement avec le GIF
             loadingScreen.classList.add('active');
             categoriesContainer.style.display = 'none';
 
+            // 3. Après 2 secondes (durée du GIF), afficher les produits
             setTimeout(() => {
                 loadingScreen.classList.remove('active');
                 displayProducts(categoryKey);
@@ -299,6 +305,11 @@
             categoriesContainer.style.display = 'block';
             backBtn.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Arrêter le son si nécessaire
+            if (raptorAudio) {
+                raptorAudio.pause();
+                raptorAudio.currentTime = 0;
+            }
         }
 
         // ==========================================
@@ -319,6 +330,20 @@
                 container.appendChild(flake);
             }
         })();
+
+        // Préchargement du son au premier clic sur la page
+        document.addEventListener('click', function preloadAudio() {
+            if (!raptorAudio) {
+                raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
+                raptorAudio.volume = 0.8;
+                raptorAudio.onended = function() {
+                    this.currentTime = 0;
+                };
+                // Préchargement silencieux
+                raptorAudio.load();
+            }
+            document.removeEventListener('click', preloadAudio);
+        }, { once: true });
     </script>
 </body>
 </html>
