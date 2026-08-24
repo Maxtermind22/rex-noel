@@ -99,57 +99,6 @@
         .loading-screen .loading-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #e64a2a, #ffd700); border-radius: 10px; animation: loadBar 1.8s ease-in-out forwards; }
         @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
 
-        /* ===== LECTEUR MUSIQUE JURASSIC PARK ===== */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(8, 16, 8, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 50px;
-            padding: 10px 16px;
-            border: 1px solid rgba(200, 100, 50, 0.15);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .music-player .play-btn {
-            background: none;
-            border: none;
-            color: #f0e0c8;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(200, 50, 30, 0.2);
-            transition: all 0.3s ease;
-        }
-        .music-player .play-btn:hover { background: rgba(200, 50, 30, 0.4); transform: scale(1.1); }
-        .music-player .volume-slider {
-            width: 60px;
-            height: 4px;
-            -webkit-appearance: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            outline: none;
-        }
-        .music-player .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #e64a2a;
-            cursor: pointer;
-        }
-        .music-player .music-label { font-size: 0.7rem; color: #a89878; opacity: 0.6; }
-        @media (max-width: 480px) { .music-player { padding: 8px 12px; gap: 8px; } .music-player .volume-slider { width: 40px; } .music-player .music-label { display: none; } }
-
         footer { text-align: center; color: #3a4a3a; padding: 25px 0 10px; font-size: 0.75rem; opacity: 0.3; margin-top: 20px; }
         @media (max-width: 768px) { .header h1 { font-size: 2.4rem; } .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; } .category-card { padding: 30px 15px; } }
         @media (max-width: 480px) { .categories-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } }
@@ -162,13 +111,6 @@
 
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
-
-    <!-- ===== LECTEUR MUSIQUE JURASSIC PARK ===== -->
-    <div class="music-player">
-        <button class="play-btn" id="musicPlayBtn">▶️</button>
-        <input type="range" class="volume-slider" id="musicVolume" min="0" max="1" step="0.05" value="0.3">
-        <span class="music-label">🦕 Jurassic Park</span>
-    </div>
 
     <!-- ===== ÉCRAN DE CHARGEMENT ===== -->
     <div class="loading-screen" id="loadingScreen">
@@ -264,82 +206,52 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // 3. MUSIQUE JURASSIC PARK (VOTRE FICHIER)
+        // 3. MUSIQUE DE FOND (AUTOMATIQUE)
         // ==========================================
-        let bgMusic = null;
-        let isMusicPlaying = false;
-        const musicPlayBtn = document.getElementById('musicPlayBtn');
-        const musicVolume = document.getElementById('musicVolume');
+        let backgroundMusic = null;
 
-        // Utilisation de votre fichier Google Drive pour la musique
-        const MUSIC_URL = 'https://drive.google.com/uc?export=download&id=1YmNyupQto2ISJID6bd3pASvEwq1HEFVT';
-
-        function initMusic() {
+        function startBackgroundMusic() {
             try {
-                bgMusic = new Audio(MUSIC_URL);
-                bgMusic.loop = true;
-                bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
-                console.log('🎵 Musique Jurassic Park prête (votre fichier)');
+                backgroundMusic = new Audio('https://voca.ro/18iZbj2VUH9X');
+                backgroundMusic.loop = true;
+                backgroundMusic.volume = 0.3;
+                
+                // Tente de jouer automatiquement
+                const playPromise = backgroundMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('🎵 Musique de fond lancée automatiquement');
+                    }).catch(error => {
+                        console.log('⚠️ Lecture automatique bloquée. La musique démarrera au premier clic.');
+                        // En cas de blocage, on la lance au premier clic sur la page
+                        document.addEventListener('click', function startMusicOnClick() {
+                            if (backgroundMusic) {
+                                backgroundMusic.play().then(() => {
+                                    console.log('🎵 Musique de fond lancée après clic');
+                                }).catch(e => console.log('Erreur musique:', e));
+                                document.removeEventListener('click', startMusicOnClick);
+                            }
+                        }, { once: true });
+                    });
+                }
             } catch(e) {
-                console.log('Erreur chargement musique:', e);
+                console.log('❌ Erreur chargement musique:', e);
             }
         }
 
-        // Démarrer la musique au clic
-        musicPlayBtn.addEventListener('click', function() {
-            if (!bgMusic) initMusic();
-            if (!bgMusic) {
-                alert('Impossible de charger la musique. Vérifiez votre connexion internet.');
-                return;
-            }
-            
-            if (isMusicPlaying) {
-                bgMusic.pause();
-                isMusicPlaying = false;
-                musicPlayBtn.textContent = '▶️';
-                console.log('⏸️ Musique en pause');
-            } else {
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicPlayBtn.textContent = '⏸️';
-                    console.log('▶️ Musique en cours');
-                }).catch(e => {
-                    console.log('Erreur lecture:', e);
-                    // Tentative de relance
-                    try {
-                        bgMusic = new Audio(MUSIC_URL);
-                        bgMusic.loop = true;
-                        bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
-                        bgMusic.play().then(() => {
-                            isMusicPlaying = true;
-                            musicPlayBtn.textContent = '⏸️';
-                        }).catch(e2 => console.log('Erreur 2:', e2));
-                    } catch(e2) {}
-                });
-            }
-        });
-
-        // Contrôle du volume
-        musicVolume.addEventListener('input', function() {
-            if (bgMusic) bgMusic.volume = parseFloat(this.value);
-        });
-
         // ==========================================
-        // 4. SON DU RAPTOR (VOTRE FICHIER GOOGLE DRIVE)
+        // 4. SON DU RAPTOR (VOCAROO)
         // ==========================================
         let raptorAudio = null;
         let raptorReady = false;
 
-        // Votre nouveau lien Google Drive pour le cri du raptor
-        const RAPTOR_URL = 'https://drive.google.com/uc?export=download&id=19AYBDJe23v6-wr91_IkLGkY7CnSYxXSJ';
-
         function prepareRaptorSound() {
             try {
-                raptorAudio = new Audio(RAPTOR_URL);
+                raptorAudio = new Audio('https://voca.ro/1cNip4cfbXDJ');
                 raptorAudio.volume = 0.9;
                 raptorAudio.load();
                 raptorReady = true;
-                console.log('✅ Son raptor préparé (votre fichier Google Drive)');
+                console.log('✅ Son raptor préparé (Vocaroo)');
             } catch(e) {
                 console.log('⚠️ Erreur chargement son raptor:', e);
                 raptorReady = false;
@@ -390,7 +302,7 @@
         function loadCategory(categoryKey) {
             console.log('🔄 Chargement catégorie:', categoryKey);
             
-            // Joue le cri du raptor (votre fichier)
+            // Joue le cri du raptor
             playRaptorSound();
             
             // Affiche l'écran de chargement
@@ -457,21 +369,15 @@
         })();
 
         // ==========================================
-        // 7. PRÉPARATION AUDIO (au premier clic)
+        // 7. LANCEMENT
         // ==========================================
-        let audioPrepared = false;
-        document.addEventListener('click', function prepareAudio() {
-            if (!audioPrepared) {
-                console.log('🎵 Préparation des sons...');
-                prepareRaptorSound();
-                initMusic();
-                audioPrepared = true;
-            }
-        }, { once: true });
-
         console.log('🦕 Site Rex Noël chargé !');
-        console.log('📢 Cliquez sur une catégorie pour entendre le VRAI cri du raptor !');
-        console.log('🎵 Cliquez sur "▶️" pour la musique Jurassic Park !');
+        
+        // Préparer le son du raptor
+        prepareRaptorSound();
+        
+        // Démarrer la musique automatiquement
+        startBackgroundMusic();
     </script>
 </body>
 </html>
