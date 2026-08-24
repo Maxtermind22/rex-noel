@@ -3,102 +3,475 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦕 La Forêt du Rex Noël - Test</title>
+    <title>🦕 La Forêt du Rex Noël</title>
     <style>
+        /* ===== STYLES COMPLETS ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0a120a;
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
             color: #e8dcc8;
-            text-align: center;
-            padding: 50px;
+            background: #0a0f0a;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        button {
-            background: #e64a2a;
-            color: white;
+
+        /* ===== FOND ===== */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: #0a120a;
+        }
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.pinimg.com/736x/25/23/92/2523920a23306b0744f04fe6c406f6c0.jpg') center/cover no-repeat;
+            opacity: 0.9;
+            z-index: -1;
+            filter: brightness(0.45) saturate(1.1) contrast(1.2);
+        }
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(10, 30, 10, 0.4) 0%, rgba(0, 5, 0, 0.85) 100%);
+            z-index: -1;
+        }
+
+        /* ===== FLOCONS ===== */
+        .snowflakes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+        .snowflake { position: absolute; top: -20px; color: #fff; font-size: 1rem; animation: fall linear infinite; opacity: 0.3; }
+        @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+        /* ===== CONTENU ===== */
+        .content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 15px; }
+        .header { text-align: center; padding: 35px 15px 25px; background: rgba(8, 16, 8, 0.85); backdrop-filter: blur(8px); border-radius: 25px; margin-bottom: 30px; border: 2px solid rgba(200, 50, 30, 0.15); box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7); position: relative; overflow: hidden; }
+        .header h1 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 3.2rem; color: #f5e6d3; text-shadow: 0 4px 30px rgba(200, 50, 20, 0.3); letter-spacing: 2px; }
+        .header h1 .rex { color: #e64a2a; }
+        .header h1 .noel { color: #ffd700; }
+        .header .slogan { font-size: 0.95rem; color: #b8a88a; margin-top: 10px; font-style: italic; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 6px 22px; border-radius: 40px; }
+
+        .back-btn { display: inline-block; background: rgba(200, 50, 30, 0.25); color: #f0e0c8; border: 1px solid rgba(200, 100, 50, 0.15); padding: 8px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 15px; font-family: inherit; }
+        .back-btn:hover { background: rgba(200, 50, 30, 0.4); transform: scale(1.05); }
+        .back-btn.hidden { display: none; }
+
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 15px; }
+        .category-card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(8px); border-radius: 25px; padding: 40px 20px; text-align: center; border: 2px solid rgba(200, 150, 80, 0.06); transition: all 0.4s ease; cursor: pointer; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
+        .category-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(200, 100, 50, 0.12); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); background: rgba(28, 20, 10, 0.92); }
+        .category-card .cat-icon { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+        .category-card .cat-name { font-family: 'Fredoka One', 'Impact', cursive; font-size: 1.8rem; color: #f0d8b0; }
+        .category-card .cat-desc { color: #a89878; margin-top: 6px; font-size: 0.85rem; }
+        .category-card .cat-arrow { font-size: 1.6rem; margin-top: 12px; display: block; opacity: 0.25; transition: all 0.3s ease; }
+        .category-card:hover .cat-arrow { opacity: 0.7; transform: translateX(8px); }
+
+        .products-section { display: none; animation: fadeIn 0.4s ease; }
+        .products-section.active { display: block; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        .products-section h2 { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2rem; color: #f0d8b0; border-bottom: 2px solid rgba(200, 100, 50, 0.06); padding-bottom: 12px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .card { background: rgba(18, 14, 8, 0.85); backdrop-filter: blur(4px); border-radius: 18px; padding: 14px 12px 18px; text-align: center; border: 1px solid rgba(200, 150, 80, 0.04); transition: all 0.4s ease; box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4); animation: fadeIn 0.5s ease forwards; }
+        .card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(200, 100, 50, 0.1); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); background: rgba(28, 20, 10, 0.9); }
+        .card .image-placeholder { width: 100%; height: 120px; background: radial-gradient(ellipse at center, #1a2a1a, #0a120a); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; margin-bottom: 10px; }
+        .card .product-name { font-size: 1rem; font-weight: 700; color: #f0e0c8; margin-bottom: 3px; }
+        .card .product-desc { font-size: 0.75rem; color: #a89878; margin-bottom: 6px; line-height: 1.3; min-height: 32px; }
+        .card .product-price { font-size: 1.2rem; font-weight: 800; color: #ff6b4a; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 3px 16px; border-radius: 30px; }
+
+        /* ===== ÉCRAN DE CHARGEMENT ===== */
+        .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .loading-screen.active { display: flex; }
+        .loading-screen .raptor-container { text-align: center; animation: raptorRoar 0.6s ease-in-out infinite alternate; width: 90%; max-width: 800px; }
+        .loading-screen .raptor-gif { width: 100%; height: auto; max-height: 70vh; border-radius: 20px; box-shadow: 0 0 100px rgba(230, 74, 42, 0.3); }
+        @keyframes raptorRoar { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.03) rotate(2deg); } }
+        .loading-screen .roar-text { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2.5rem; color: #ff6b4a; text-shadow: 0 0 50px rgba(230, 74, 42, 0.4); margin-top: 20px; animation: roarPulse 0.5s ease-in-out infinite alternate; }
+        @keyframes roarPulse { 0% { transform: scale(1); text-shadow: 0 0 20px rgba(230, 74, 42, 0.3); } 100% { transform: scale(1.05); text-shadow: 0 0 60px rgba(230, 74, 42, 0.6); } }
+        .loading-screen .loading-bar { width: 200px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; margin-top: 25px; overflow: hidden; }
+        .loading-screen .loading-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #e64a2a, #ffd700); border-radius: 10px; animation: loadBar 1.8s ease-in-out forwards; }
+        @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
+
+        /* ===== LECTEUR MUSIQUE JURASSIC PARK ===== */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(8, 16, 8, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 10px 16px;
+            border: 1px solid rgba(200, 100, 50, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .music-player .play-btn {
+            background: none;
             border: none;
-            padding: 20px 40px;
+            color: #f0e0c8;
             font-size: 1.5rem;
-            border-radius: 30px;
             cursor: pointer;
-            margin: 20px;
-            transition: 0.3s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(200, 50, 30, 0.2);
+            transition: all 0.3s ease;
         }
-        button:hover {
-            transform: scale(1.1);
-            background: #ff6b4a;
+        .music-player .play-btn:hover { background: rgba(200, 50, 30, 0.4); transform: scale(1.1); }
+        .music-player .volume-slider {
+            width: 60px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            outline: none;
         }
-        .status {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: #b8a88a;
+        .music-player .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #e64a2a;
+            cursor: pointer;
         }
+        .music-player .music-label { font-size: 0.7rem; color: #a89878; opacity: 0.6; }
+        @media (max-width: 480px) { .music-player { padding: 8px 12px; gap: 8px; } .music-player .volume-slider { width: 40px; } .music-player .music-label { display: none; } }
+
+        footer { text-align: center; color: #3a4a3a; padding: 25px 0 10px; font-size: 0.75rem; opacity: 0.3; margin-top: 20px; }
+        @media (max-width: 768px) { .header h1 { font-size: 2.4rem; } .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; } .category-card { padding: 30px 15px; } }
+        @media (max-width: 480px) { .categories-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <h1>🦎 Test du Cri du Raptor</h1>
-    <p>Clique sur le bouton pour entendre le cri.</p>
-    <button id="testRaptorBtn">🔊 Tester le Cri</button>
-    <p class="status" id="statusMessage">En attente de test...</p>
+
+    <!-- ===== FOND ===== -->
+    <div class="background"></div>
+
+    <!-- ===== FLOCONS ===== -->
+    <div class="snowflakes" id="snowflakes"></div>
+
+    <!-- ===== LECTEUR MUSIQUE JURASSIC PARK ===== -->
+    <div class="music-player">
+        <button class="play-btn" id="musicPlayBtn">▶️</button>
+        <input type="range" class="volume-slider" id="musicVolume" min="0" max="1" step="0.05" value="0.3">
+        <span class="music-label">🦕 Jurassic Park</span>
+    </div>
+
+    <!-- ===== ÉCRAN DE CHARGEMENT ===== -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="raptor-container">
+            <img class="raptor-gif" src="https://media.giphy.com/media/5kLEgnNWvI1hCgbvbY/giphy.gif" alt="Vélociraptor">
+            <div class="roar-text">🦎 RAAAAAWR !</div>
+            <div class="loading-bar"><div class="fill"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== CONTENU ===== -->
+    <div class="content">
+        <header class="header">
+            <h1>🦕 La Forêt du <span class="rex">Rex</span> <span class="noel">Noël</span> 🦖</h1>
+            <div class="slogan">❄️ Le catalogue préhistorique des cadeaux de Noël — édition 2026</div>
+        </header>
+
+        <button class="back-btn hidden" id="backBtn" onclick="showCategories()">⬅️ Retour aux catégories</button>
+
+        <!-- CATÉGORIES -->
+        <div id="categoriesContainer">
+            <div class="categories-grid">
+                <div class="category-card" onclick="loadCategory('librairie')">
+                    <span class="cat-icon">📚</span>
+                    <div class="cat-name">Librairie</div>
+                    <div class="cat-desc">Webtoons & mangas</div>
+                    <span class="cat-arrow">➜</span>
+                </div>
+                <div class="category-card" onclick="loadCategory('gaming')">
+                    <span class="cat-icon">🎮</span>
+                    <div class="cat-name">Gaming</div>
+                    <div class="cat-desc">Jeux vidéo PS5</div>
+                    <span class="cat-arrow">➜</span>
+                </div>
+                <div class="category-card" onclick="loadCategory('loisirs')">
+                    <span class="cat-icon">🧶</span>
+                    <div class="cat-name">Loisirs créatifs</div>
+                    <div class="cat-desc">Lego & puzzles</div>
+                    <span class="cat-arrow">➜</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUITS -->
+        <div class="products-section" id="productsContainer">
+            <h2 id="categoryTitle">📚 Librairie</h2>
+            <div class="grid" id="productsGrid"></div>
+        </div>
+
+        <footer>🦕 La Forêt du Rex Noël • Catalogue 2026</footer>
+    </div>
 
     <script>
-        let raptorAudio = null;
-        const statusMessage = document.getElementById('statusMessage');
+        // ==========================================
+        // 1. LES PRODUITS
+        // ==========================================
+        const products = {
+            librairie: {
+                emoji: '📚',
+                name: 'Librairie',
+                items: [
+                    { emoji: '📘', name: 'Jungle Juice Tome 5', desc: 'Webtoon coréen — l\'aventure continue !', price: '14.99' },
+                    { emoji: '📕', name: 'Demon Slave Tome 18', desc: 'Manga de Takahiro — à partir du tome 18', price: '7.30' }
+                ]
+            },
+            gaming: {
+                emoji: '🎮',
+                name: 'Gaming',
+                items: [
+                    { emoji: '🎯', name: 'Echoes of Aincrad', desc: 'Jeux vidéo PS5 — nouvelle aventure épique', price: '69.99' },
+                    { emoji: '🏎️', name: 'GTA VI', desc: 'Jeux vidéo PS5 — le retour de la légende', price: '79.99' }
+                ]
+            },
+            loisirs: {
+                emoji: '🧶',
+                name: 'Loisirs créatifs',
+                items: [
+                    { emoji: '🏛️', name: 'LEGO Architecture Notre-Dame', desc: 'Set LEGO 21061 — La cathédrale en briques', price: '160.99' },
+                    { emoji: '🦖', name: 'Fossiles T-Rex LEGO', desc: 'Set LEGO — Le Tyrannosaurus rex à monter', price: '249.99' },
+                    { emoji: '🎨', name: 'Puzzle Totoro', desc: 'Puzzle vitrail 126 pièces — My Neighbor Totoro', price: '30.00' }
+                ]
+            }
+        };
 
-        function playRaptorSound() {
-            statusMessage.textContent = '🔊 Tentative de lecture...';
-            
+        // ==========================================
+        // 2. RÉFÉRENCES DOM
+        // ==========================================
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const productsContainer = document.getElementById('productsContainer');
+        const productsGrid = document.getElementById('productsGrid');
+        const categoryTitle = document.getElementById('categoryTitle');
+        const backBtn = document.getElementById('backBtn');
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        // ==========================================
+        // 3. MUSIQUE JURASSIC PARK (VOTRE FICHIER)
+        // ==========================================
+        let bgMusic = null;
+        let isMusicPlaying = false;
+        const musicPlayBtn = document.getElementById('musicPlayBtn');
+        const musicVolume = document.getElementById('musicVolume');
+
+        // Utilisation de votre fichier Google Drive pour la musique
+        const MUSIC_URL = 'https://drive.google.com/uc?export=download&id=1YmNyupQto2ISJID6bd3pASvEwq1HEFVT';
+
+        function initMusic() {
             try {
-                // Utilisation de votre fichier Vocaroo
-                if (!raptorAudio) {
-                    raptorAudio = new Audio('https://voca.ro/1klPS5JpP4Hi');
-                    raptorAudio.volume = 0.8;
-                    raptorAudio.onerror = function() {
-                        statusMessage.textContent = '❌ Erreur : Le fichier Vocaroo n\'est pas accessible.';
-                    };
-                }
-                
-                raptorAudio.currentTime = 0;
-                const playPromise = raptorAudio.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        statusMessage.textContent = '✅ Cri joué avec succès !';
-                    }).catch(error => {
-                        statusMessage.textContent = '⚠️ Bloqué par le navigateur. Essaie de cliquer à nouveau.';
-                        console.log('Erreur de lecture:', error);
-                        
-                        // Son de secours si le fichier Vocaroo échoue
-                        try {
-                            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                            const duration = 0.6;
-                            const sampleRate = audioCtx.sampleRate;
-                            const bufferSize = sampleRate * duration;
-                            const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
-                            const data = buffer.getChannelData(0);
-                            for (let i = 0; i < bufferSize; i++) {
-                                const t = i / bufferSize;
-                                const envelope = Math.exp(-t * 10) * (1 - Math.exp(-t * 30));
-                                const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
-                                const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
-                                const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
-                                data[i] = (carrier * 0.6 + noise) * envelope * 0.5;
-                            }
-                            const source = audioCtx.createBufferSource();
-                            source.buffer = buffer;
-                            source.connect(audioCtx.destination);
-                            source.start();
-                            statusMessage.textContent = '✅ Cri de secours joué (synthétisé)';
-                        } catch(e) {
-                            statusMessage.textContent = '❌ Aucun son disponible.';
-                        }
-                    });
-                }
+                bgMusic = new Audio(MUSIC_URL);
+                bgMusic.loop = true;
+                bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
+                console.log('🎵 Musique Jurassic Park prête (votre fichier)');
             } catch(e) {
-                statusMessage.textContent = '❌ Erreur générale: ' + e.message;
+                console.log('Erreur chargement musique:', e);
             }
         }
 
-        document.getElementById('testRaptorBtn').addEventListener('click', playRaptorSound);
+        // Démarrer la musique au clic
+        musicPlayBtn.addEventListener('click', function() {
+            if (!bgMusic) initMusic();
+            if (!bgMusic) {
+                alert('Impossible de charger la musique. Vérifiez votre connexion internet.');
+                return;
+            }
+            
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicPlayBtn.textContent = '▶️';
+                console.log('⏸️ Musique en pause');
+            } else {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicPlayBtn.textContent = '⏸️';
+                    console.log('▶️ Musique en cours');
+                }).catch(e => {
+                    console.log('Erreur lecture:', e);
+                    // Tentative de relance
+                    try {
+                        bgMusic = new Audio(MUSIC_URL);
+                        bgMusic.loop = true;
+                        bgMusic.volume = parseFloat(musicVolume.value) || 0.3;
+                        bgMusic.play().then(() => {
+                            isMusicPlaying = true;
+                            musicPlayBtn.textContent = '⏸️';
+                        }).catch(e2 => console.log('Erreur 2:', e2));
+                    } catch(e2) {}
+                });
+            }
+        });
+
+        // Contrôle du volume
+        musicVolume.addEventListener('input', function() {
+            if (bgMusic) bgMusic.volume = parseFloat(this.value);
+        });
+
+        // ==========================================
+        // 4. SON DU RAPTOR (VOTRE FICHIER GOOGLE DRIVE)
+        // ==========================================
+        let raptorAudio = null;
+        let raptorReady = false;
+
+        // Votre nouveau lien Google Drive pour le cri du raptor
+        const RAPTOR_URL = 'https://drive.google.com/uc?export=download&id=19AYBDJe23v6-wr91_IkLGkY7CnSYxXSJ';
+
+        function prepareRaptorSound() {
+            try {
+                raptorAudio = new Audio(RAPTOR_URL);
+                raptorAudio.volume = 0.9;
+                raptorAudio.load();
+                raptorReady = true;
+                console.log('✅ Son raptor préparé (votre fichier Google Drive)');
+            } catch(e) {
+                console.log('⚠️ Erreur chargement son raptor:', e);
+                raptorReady = false;
+            }
+        }
+
+        function playRaptorSound() {
+            console.log('🔊 Tentative lecture raptor...');
+            
+            // Si le son n'est pas prêt, on le prépare
+            if (!raptorReady || !raptorAudio) {
+                prepareRaptorSound();
+                if (!raptorReady) {
+                    console.log('❌ Impossible de charger le son du raptor');
+                    return;
+                }
+            }
+
+            // Lecture du son
+            try {
+                raptorAudio.currentTime = 0;
+                const playPromise = raptorAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('✅ Cri du raptor joué avec succès !');
+                    }).catch((error) => {
+                        console.log('⚠️ Lecture bloquée, attente d\'un clic...', error);
+                        // Si le navigateur bloque, on attend un clic pour rejouer
+                        document.addEventListener('click', function playOnClick() {
+                            if (raptorAudio) {
+                                raptorAudio.currentTime = 0;
+                                raptorAudio.play().then(() => {
+                                    console.log('✅ Cri du raptor joué après clic');
+                                }).catch(e => console.log('❌ Erreur après clic:', e));
+                            }
+                            document.removeEventListener('click', playOnClick);
+                        }, { once: true });
+                    });
+                }
+            } catch(e) {
+                console.log('❌ Erreur lecture raptor:', e);
+            }
+        }
+
+        // ==========================================
+        // 5. FONCTIONS PRINCIPALES
+        // ==========================================
+        function loadCategory(categoryKey) {
+            console.log('🔄 Chargement catégorie:', categoryKey);
+            
+            // Joue le cri du raptor (votre fichier)
+            playRaptorSound();
+            
+            // Affiche l'écran de chargement
+            loadingScreen.classList.add('active');
+            categoriesContainer.style.display = 'none';
+
+            setTimeout(() => {
+                loadingScreen.classList.remove('active');
+                displayProducts(categoryKey);
+                backBtn.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                console.log('✅ Catégorie chargée:', categoryKey);
+            }, 2000);
+        }
+
+        function displayProducts(categoryKey) {
+            const data = products[categoryKey];
+            if (!data) return;
+            
+            categoryTitle.innerHTML = `${data.emoji} ${data.name}`;
+            productsGrid.innerHTML = '';
+            
+            data.items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = (index * 0.1) + 's';
+                card.innerHTML = `
+                    <div class="image-placeholder">${item.emoji}</div>
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-desc">${item.desc}</div>
+                    <div class="product-price">${item.price} <small>€</small></div>
+                `;
+                productsGrid.appendChild(card);
+            });
+            
+            productsContainer.classList.add('active');
+        }
+
+        function showCategories() {
+            productsContainer.classList.remove('active');
+            categoriesContainer.style.display = 'block';
+            backBtn.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log('↩️ Retour aux catégories');
+        }
+
+        // ==========================================
+        // 6. FLOCONS
+        // ==========================================
+        (function() {
+            const container = document.getElementById('snowflakes');
+            const flakes = ['❄', '❅', '❆', '✦', '•'];
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.fontSize = (0.5 + Math.random() * 1.6) + 'rem';
+                flake.style.opacity = 0.15 + Math.random() * 0.3;
+                flake.style.animationDuration = (10 + Math.random() * 16) + 's';
+                flake.style.animationDelay = (Math.random() * 18) + 's';
+                container.appendChild(flake);
+            }
+        })();
+
+        // ==========================================
+        // 7. PRÉPARATION AUDIO (au premier clic)
+        // ==========================================
+        let audioPrepared = false;
+        document.addEventListener('click', function prepareAudio() {
+            if (!audioPrepared) {
+                console.log('🎵 Préparation des sons...');
+                prepareRaptorSound();
+                initMusic();
+                audioPrepared = true;
+            }
+        }, { once: true });
+
+        console.log('🦕 Site Rex Noël chargé !');
+        console.log('📢 Cliquez sur une catégorie pour entendre le VRAI cri du raptor !');
+        console.log('🎵 Cliquez sur "▶️" pour la musique Jurassic Park !');
     </script>
 </body>
 </html>
