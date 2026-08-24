@@ -154,7 +154,7 @@
             100% { width: 100%; }
         }
 
-        /* ===== LECTEUR AUDIO ===== */
+        /* ===== LECTEUR AUDIO (MUSIQUE DE FOND) ===== */
         .audio-player {
             position: fixed;
             bottom: 20px;
@@ -211,11 +211,11 @@
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
-    <!-- ===== LECTEUR AUDIO (MUSIQUE DE FOND) ===== -->
+    <!-- ===== LECTEUR AUDIO (VOTRE MUSIQUE) ===== -->
     <div class="audio-player">
         <span class="player-label">🦕 Jurassic</span>
         <audio controls loop>
-            <source https://www.youtube.com/watch?v=affWDOwi2_g type="audio/mpeg">
+            <source src="https://voca.ro/1cLKJnUvTNi0" type="audio/mpeg">
             Votre navigateur ne supporte pas la lecture audio.
         </audio>
     </div>
@@ -314,90 +314,59 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // 3. SON DU RAPTOR (FICHIER LIBRE DE DROITS)
+        // 3. SON DU RAPTOR (VOTRE FICHIER VOCAROO)
         // ==========================================
         let raptorAudio = null;
         let raptorReady = false;
 
         function prepareRaptorSound() {
             try {
-                // Utilisation d'un son de raptor libre de droits hébergé sur un serveur fiable
-                raptorAudio = new Audio('https://www.soundjay.com/animal/velociraptor-1.mp3');
+                raptorAudio = new Audio('https://voca.ro/1cNip4cfbXDJ');
                 raptorAudio.volume = 0.9;
                 raptorAudio.load();
                 raptorReady = true;
-                console.log('✅ Son raptor préparé (SoundJay)');
+                console.log('✅ Son raptor préparé (Vocaroo)');
             } catch(e) {
                 console.log('⚠️ Erreur chargement son raptor:', e);
                 raptorReady = false;
-                
-                // TENTATIVE DE SECOURS : son synthétisé
-                try {
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    const duration = 0.6;
-                    const sampleRate = audioCtx.sampleRate;
-                    const bufferSize = sampleRate * duration;
-                    const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
-                    const data = buffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) {
-                        const t = i / bufferSize;
-                        const envelope = Math.exp(-t * 10) * (1 - Math.exp(-t * 30));
-                        const freq = 1800 + 600 * Math.sin(t * 30) + 400 * Math.sin(t * 60);
-                        const carrier = Math.sin(2 * Math.PI * freq * t * sampleRate / sampleRate);
-                        const noise = (Math.random() * 2 - 1) * 0.3 * (1 - t * 2);
-                        data[i] = (carrier * 0.6 + noise) * envelope * 0.5;
-                    }
-                    const source = audioCtx.createBufferSource();
-                    source.buffer = buffer;
-                    source.connect(audioCtx.destination);
-                    // On stocke la source pour la jouer plus tard
-                    window._raptorFallback = source;
-                    raptorReady = true;
-                    console.log('✅ Son raptor de secours préparé (synthétisé)');
-                } catch(e2) {
-                    console.log('❌ Échec du son de secours');
-                }
             }
         }
 
         function playRaptorSound() {
             console.log('🔊 Tentative lecture raptor...');
             
-            // Si le son principal est prêt, on le joue
-            if (raptorReady && raptorAudio) {
-                try {
-                    raptorAudio.currentTime = 0;
-                    const playPromise = raptorAudio.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            console.log('✅ Cri du raptor joué avec succès !');
-                        }).catch((error) => {
-                            console.log('⚠️ Lecture bloquée, attente d\'un clic...', error);
-                            document.addEventListener('click', function playOnClick() {
-                                if (raptorAudio) {
-                                    raptorAudio.currentTime = 0;
-                                    raptorAudio.play().then(() => {
-                                        console.log('✅ Cri du raptor joué après clic');
-                                    }).catch(e => console.log('❌ Erreur après clic:', e));
-                                }
-                                document.removeEventListener('click', playOnClick);
-                            }, { once: true });
-                        });
-                    }
+            // Si le son n'est pas prêt, on le prépare
+            if (!raptorReady || !raptorAudio) {
+                prepareRaptorSound();
+                if (!raptorReady) {
+                    console.log('❌ Impossible de charger le son du raptor');
                     return;
-                } catch(e) {
-                    console.log('❌ Erreur lecture raptor:', e);
                 }
             }
-            
-            // Si le son principal a échoué, on essaie le son de secours
-            if (window._raptorFallback) {
-                try {
-                    window._raptorFallback.start();
-                    console.log('✅ Son de secours joué');
-                } catch(e) {
-                    console.log('❌ Erreur son de secours:', e);
+
+            // Lecture du son
+            try {
+                raptorAudio.currentTime = 0;
+                const playPromise = raptorAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('✅ Cri du raptor joué avec succès !');
+                    }).catch((error) => {
+                        console.log('⚠️ Lecture bloquée, attente d\'un clic...', error);
+                        // Si le navigateur bloque, on attend un clic pour rejouer
+                        document.addEventListener('click', function playOnClick() {
+                            if (raptorAudio) {
+                                raptorAudio.currentTime = 0;
+                                raptorAudio.play().then(() => {
+                                    console.log('✅ Cri du raptor joué après clic');
+                                }).catch(e => console.log('❌ Erreur après clic:', e));
+                            }
+                            document.removeEventListener('click', playOnClick);
+                        }, { once: true });
+                    });
                 }
+            } catch(e) {
+                console.log('❌ Erreur lecture raptor:', e);
             }
         }
 
@@ -480,13 +449,6 @@
         
         // Préparer le son du raptor
         prepareRaptorSound();
-        
-        // Démarrer le son de secours si le principal n'est pas prêt
-        setTimeout(() => {
-            if (!raptorReady) {
-                prepareRaptorSound();
-            }
-        }, 2000);
     </script>
 </body>
 </html>
