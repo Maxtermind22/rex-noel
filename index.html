@@ -88,16 +88,116 @@
         .card .product-price { font-size: 1.2rem; font-weight: 800; color: #ff6b4a; background: rgba(0, 0, 0, 0.3); display: inline-block; padding: 3px 16px; border-radius: 30px; }
 
         /* ===== ÉCRAN DE CHARGEMENT ===== */
-        .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(10px); z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
         .loading-screen.active { display: flex; }
-        .loading-screen .raptor-container { text-align: center; animation: raptorRoar 0.6s ease-in-out infinite alternate; width: 90%; max-width: 800px; }
-        .loading-screen .raptor-gif { width: 100%; height: auto; max-height: 70vh; border-radius: 20px; box-shadow: 0 0 100px rgba(230, 74, 42, 0.3); }
-        @keyframes raptorRoar { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.03) rotate(2deg); } }
-        .loading-screen .roar-text { font-family: 'Fredoka One', 'Impact', cursive; font-size: 2.5rem; color: #ff6b4a; text-shadow: 0 0 50px rgba(230, 74, 42, 0.4); margin-top: 20px; animation: roarPulse 0.5s ease-in-out infinite alternate; }
-        @keyframes roarPulse { 0% { transform: scale(1); text-shadow: 0 0 20px rgba(230, 74, 42, 0.3); } 100% { transform: scale(1.05); text-shadow: 0 0 60px rgba(230, 74, 42, 0.6); } }
-        .loading-screen .loading-bar { width: 200px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; margin-top: 25px; overflow: hidden; }
-        .loading-screen .loading-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #e64a2a, #ffd700); border-radius: 10px; animation: loadBar 1.8s ease-in-out forwards; }
-        @keyframes loadBar { 0% { width: 0%; } 100% { width: 100%; } }
+        .loading-screen .raptor-container {
+            text-align: center;
+            animation: raptorRoar 0.6s ease-in-out infinite alternate;
+            width: 90%;
+            max-width: 800px;
+        }
+        .loading-screen .raptor-gif {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            border-radius: 20px;
+            box-shadow: 0 0 100px rgba(230, 74, 42, 0.3);
+        }
+        @keyframes raptorRoar {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.03) rotate(2deg); }
+        }
+        /* ===== NOUVEAU TEXTE "CHARGEMENT..." ===== */
+        .loading-screen .roar-text {
+            font-family: 'Fredoka One', 'Impact', cursive;
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            margin-top: 20px;
+            animation: loadingPulse 1.5s ease-in-out infinite;
+            letter-spacing: 4px;
+        }
+        @keyframes loadingPulse {
+            0% { transform: scale(1); opacity: 0.6; text-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 60px rgba(255, 215, 0, 0.5); }
+            100% { transform: scale(1); opacity: 0.6; text-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+        }
+        .loading-screen .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            margin-top: 25px;
+            overflow: hidden;
+        }
+        .loading-screen .loading-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #e64a2a, #ffd700);
+            border-radius: 10px;
+            animation: loadBar 1.8s ease-in-out forwards;
+        }
+        @keyframes loadBar {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ===== LECTEUR AUDIO ===== */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(8, 16, 8, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 8px 16px 8px 12px;
+            border: 1px solid rgba(200, 100, 50, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .audio-player:hover {
+            border-color: rgba(200, 100, 50, 0.3);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+        }
+        .audio-player audio {
+            width: 180px;
+            height: 30px;
+            background: transparent;
+            border-radius: 30px;
+            outline: none;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(20, 30, 20, 0.8);
+        }
+        .audio-player .player-label {
+            font-size: 0.7rem;
+            color: #a89878;
+            opacity: 0.6;
+            font-style: italic;
+            white-space: nowrap;
+        }
+        @media (max-width: 480px) {
+            .audio-player { padding: 6px 10px 6px 8px; gap: 6px; }
+            .audio-player audio { width: 100px; }
+            .audio-player .player-label { display: none; }
+        }
 
         footer { text-align: center; color: #3a4a3a; padding: 25px 0 10px; font-size: 0.75rem; opacity: 0.3; margin-top: 20px; }
         @media (max-width: 768px) { .header h1 { font-size: 2.4rem; } .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; } .category-card { padding: 30px 15px; } }
@@ -112,11 +212,21 @@
     <!-- ===== FLOCONS ===== -->
     <div class="snowflakes" id="snowflakes"></div>
 
+    <!-- ===== LECTEUR AUDIO ===== -->
+    <div class="audio-player">
+        <span class="player-label">🦕 Jurassic</span>
+        <audio controls loop>
+            <source src="https://voca.ro/18iZbj2VUH9X" type="audio/mpeg">
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            Votre navigateur ne supporte pas la lecture audio.
+        </audio>
+    </div>
+
     <!-- ===== ÉCRAN DE CHARGEMENT ===== -->
     <div class="loading-screen" id="loadingScreen">
         <div class="raptor-container">
             <img class="raptor-gif" src="https://media.giphy.com/media/5kLEgnNWvI1hCgbvbY/giphy.gif" alt="Vélociraptor">
-            <div class="roar-text">🦎 RAAAAAWR !</div>
+            <div class="roar-text">⏳ Chargement...</div>
             <div class="loading-bar"><div class="fill"></div></div>
         </div>
     </div>
@@ -206,51 +316,7 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // 3. MUSIQUE DE FOND (SOLUTION QUI MARCHE)
-        // ==========================================
-        let backgroundMusic = null;
-        let musicStarted = false;
-
-        // *** CHOIX DE LA MUSIQUE ***
-        // Option 1 (RECOMMANDÉE) : Musique libre de droits (fiable à 100%)
-        const MUSIC_URL = 'https://drive.google.com/uc?export=download&id=1YmNyupQto2ISJID6bd3pASvEwq1HEFVT';
-        
-        // Option 2 : Votre fichier Google Drive (décommentez la ligne ci-dessous pour l'utiliser)
-        // const MUSIC_URL = 'https://drive.google.com/uc?export=download&id=1YmNyupQto2ISJID6bd3pASvEwq1HEFVT';
-
-        function startBackgroundMusic() {
-            try {
-                backgroundMusic = new Audio(MUSIC_URL);
-                backgroundMusic.loop = true;
-                backgroundMusic.volume = 0.3;
-                
-                // Tente de jouer automatiquement
-                const playPromise = backgroundMusic.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        musicStarted = true;
-                        console.log('🎵 Musique de fond lancée automatiquement');
-                    }).catch(error => {
-                        console.log('⚠️ Lecture automatique bloquée. La musique démarrera au premier clic.');
-                        // En cas de blocage, on la lance au premier clic sur la page
-                        document.addEventListener('click', function startMusicOnClick() {
-                            if (backgroundMusic && !musicStarted) {
-                                backgroundMusic.play().then(() => {
-                                    musicStarted = true;
-                                    console.log('🎵 Musique de fond lancée après clic');
-                                }).catch(e => console.log('Erreur musique:', e));
-                                document.removeEventListener('click', startMusicOnClick);
-                            }
-                        }, { once: true });
-                    });
-                }
-            } catch(e) {
-                console.log('❌ Erreur chargement musique:', e);
-            }
-        }
-
-        // ==========================================
-        // 4. SON DU RAPTOR (VOCAROO)
+        // 3. SON DU RAPTOR
         // ==========================================
         let raptorAudio = null;
         let raptorReady = false;
@@ -261,7 +327,7 @@
                 raptorAudio.volume = 0.9;
                 raptorAudio.load();
                 raptorReady = true;
-                console.log('✅ Son raptor préparé (Vocaroo)');
+                console.log('✅ Son raptor préparé');
             } catch(e) {
                 console.log('⚠️ Erreur chargement son raptor:', e);
                 raptorReady = false;
@@ -269,53 +335,35 @@
         }
 
         function playRaptorSound() {
-            console.log('🔊 Tentative lecture raptor...');
-            
-            // Si le son n'est pas prêt, on le prépare
             if (!raptorReady || !raptorAudio) {
                 prepareRaptorSound();
-                if (!raptorReady) {
-                    console.log('❌ Impossible de charger le son du raptor');
-                    return;
-                }
+                if (!raptorReady) return;
             }
 
-            // Lecture du son
             try {
                 raptorAudio.currentTime = 0;
-                const playPromise = raptorAudio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('✅ Cri du raptor joué avec succès !');
-                    }).catch((error) => {
-                        console.log('⚠️ Lecture bloquée, attente d\'un clic...', error);
-                        // Si le navigateur bloque, on attend un clic pour rejouer
-                        document.addEventListener('click', function playOnClick() {
-                            if (raptorAudio) {
-                                raptorAudio.currentTime = 0;
-                                raptorAudio.play().then(() => {
-                                    console.log('✅ Cri du raptor joué après clic');
-                                }).catch(e => console.log('❌ Erreur après clic:', e));
-                            }
-                            document.removeEventListener('click', playOnClick);
-                        }, { once: true });
-                    });
-                }
+                raptorAudio.play().catch(() => {
+                    document.addEventListener('click', function playOnClick() {
+                        if (raptorAudio) {
+                            raptorAudio.currentTime = 0;
+                            raptorAudio.play().catch(e => console.log('Erreur:', e));
+                        }
+                        document.removeEventListener('click', playOnClick);
+                    }, { once: true });
+                });
             } catch(e) {
                 console.log('❌ Erreur lecture raptor:', e);
             }
         }
 
         // ==========================================
-        // 5. FONCTIONS PRINCIPALES
+        // 4. FONCTIONS PRINCIPALES
         // ==========================================
         function loadCategory(categoryKey) {
             console.log('🔄 Chargement catégorie:', categoryKey);
             
-            // Joue le cri du raptor
             playRaptorSound();
             
-            // Affiche l'écran de chargement
             loadingScreen.classList.add('active');
             categoriesContainer.style.display = 'none';
 
@@ -356,11 +404,10 @@
             categoriesContainer.style.display = 'block';
             backBtn.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            console.log('↩️ Retour aux catégories');
         }
 
         // ==========================================
-        // 6. FLOCONS
+        // 5. FLOCONS
         // ==========================================
         (function() {
             const container = document.getElementById('snowflakes');
@@ -379,15 +426,10 @@
         })();
 
         // ==========================================
-        // 7. LANCEMENT
+        // 6. LANCEMENT
         // ==========================================
-        console.log('🦕 Site Rex Noël chargé !');
-        
-        // Préparer le son du raptor
         prepareRaptorSound();
-        
-        // Démarrer la musique automatiquement
-        startBackgroundMusic();
+        console.log('🦕 Site Rex Noël chargé !');
     </script>
 </body>
 </html>
