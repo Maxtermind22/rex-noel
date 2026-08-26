@@ -713,7 +713,7 @@
                 <div class="categories-grid">
                     <div class="category-card" onclick="loadCategory('librairie')">
                         <div class="cat-image">
-                            <img src="C:/Users/lecam/Desktop/Rex Noël/Images/Librairies.jpg" alt="Librairie" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>📚</span>'" />
+                            <img src="Images/Librairies.jpg" alt="Librairie" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>📚</span>'" />
                         </div>
                         <div class="cat-name">Librairie</div>
                         <div class="cat-desc">Webtoons & mangas</div>
@@ -721,7 +721,7 @@
                     </div>
                     <div class="category-card" onclick="loadCategory('gaming')">
                         <div class="cat-image">
-                            <img src="C:/Users/lecam/Desktop/Rex Noël/Images/Gaming.jpg" alt="Gaming" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>🎮</span>'" />
+                            <img src="Images/Gaming.jpg" alt="Gaming" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>🎮</span>'" />
                         </div>
                         <div class="cat-name">Gaming</div>
                         <div class="cat-desc">Jeux vidéo PS5</div>
@@ -729,7 +729,7 @@
                     </div>
                     <div class="category-card" onclick="loadCategory('loisirs')">
                         <div class="cat-image">
-                            <img src="C:/Users/lecam/Desktop/Rex Noël/Images/Loisirs créatifs.jpg" alt="Loisirs créatifs" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>🧶</span>'" />
+                            <img src="Images/Loisirs créatifs.jpg" alt="Loisirs créatifs" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'emoji-fallback\\'>🧶</span>'" />
                         </div>
                         <div class="cat-name">Loisirs créatifs</div>
                         <div class="cat-desc">Lego & puzzles</div>
@@ -775,13 +775,13 @@
                     name: 'Jungle Juice Tome 5',
                     desc: 'Webtoon coréen — l\'aventure continue !',
                     price: '14.99',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/Jungle Juice Tome 5.jpg'
+                    image: 'Images/Jungle Juice Tome 5.jpg'
                 }, {
                     emoji: '📕',
                     name: 'Demon Slave Tome 18',
                     desc: 'Manga de Takahiro — à partir du tome 18',
                     price: '7.30',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/Demon Slave Tome 18.jpg'
+                    image: 'Images/Demon Slave Tome 18.jpg'
                 }]
             },
             gaming: {
@@ -792,13 +792,13 @@
                     name: 'Echoes of Aincrad',
                     desc: 'Jeux vidéo PS5 — nouvelle aventure épique',
                     price: '69.99',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/Echoes Of Aincrad.avif'
+                    image: 'Images/Echoes Of Aincrad.avif'
                 }, {
                     emoji: '🏎️',
                     name: 'GTA VI',
                     desc: 'Jeux vidéo PS5 — le retour de la légende',
                     price: '79.99',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/GTA VI.jpg'
+                    image: 'Images/GTA VI.jpg'
                 }]
             },
             loisirs: {
@@ -809,19 +809,19 @@
                     name: 'LEGO Architecture Notre-Dame',
                     desc: 'Set LEGO 21061 — La cathédrale en briques',
                     price: '160.99',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/LEGO Notre Dame.jpg'
+                    image: 'Images/LEGO Notre Dame.jpg'
                 }, {
                     emoji: '🦖',
                     name: 'Fossiles T-Rex LEGO',
                     desc: 'Set LEGO — Le Tyrannosaurus rex à monter',
                     price: '249.99',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/LEGO T-REX.jpeg'
+                    image: 'Images/LEGO T-REX.jpeg'
                 }, {
                     emoji: '🎨',
                     name: 'Puzzle Totoro',
                     desc: 'Puzzle vitrail 126 pièces — My Neighbor Totoro',
                     price: '30.00',
-                    image: 'C:/Users/lecam/Desktop/Rex Noël/Images/Puzzle Totoro.jpg'
+                    image: 'Images/Puzzle Totoro.jpg'
                 }]
             }
         };
@@ -838,7 +838,7 @@
         const loadingScreen = document.getElementById('loadingScreen');
 
         // ==========================================
-        // 3. MUSIQUE LOCALE (Jurrasic parc theme.mp3)
+        // 3. MUSIQUE LOCALE (dans dossier Musique/)
         // ==========================================
         let backgroundMusic = null;
         let musicAllowed = false;
@@ -846,7 +846,7 @@
         function startMusic() {
             if (!musicAllowed) return;
             try {
-                backgroundMusic = new Audio('C:/Users/lecam/Desktop/Rex Noël/Jurrasic parc theme.mp3');
+                backgroundMusic = new Audio('Musique/Thème du parc jurassique.mp3');
                 backgroundMusic.loop = true;
                 backgroundMusic.volume = 0.3;
                 backgroundMusic.play().catch(e => console.log('Musique :', e));
@@ -857,18 +857,18 @@
         }
 
         // ==========================================
-        // 4. SON DU RAPTOR (fichier local)
+        // 4. SON DU RAPTOR (dans dossier Musique/)
         // ==========================================
         let raptorAudio = null;
         let raptorReady = false;
 
         function prepareRaptorSound() {
             try {
-                raptorAudio = new Audio('C:/Users/lecam/Desktop/Rex Noël/Velociraptor Cri.mp3');
+                raptorAudio = new Audio('Musique/Cri de Velociraptor.mp3');
                 raptorAudio.volume = 0.9;
                 raptorAudio.load();
                 raptorReady = true;
-                console.log('🦖 Cri du raptor chargé (fichier local)');
+                console.log('🦖 Cri du raptor chargé');
             } catch (e) {
                 console.log('Erreur chargement raptor:', e);
                 raptorReady = false;
@@ -967,20 +967,3 @@
                 flake.className = 'snowflake';
                 flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
                 flake.style.left = Math.random() * 100 + '%';
-                flake.style.fontSize = (0.5 + Math.random() * 1.6) + 'rem';
-                flake.style.opacity = 0.15 + Math.random() * 0.3;
-                flake.style.animationDuration = (10 + Math.random() * 16) + 's';
-                flake.style.animationDelay = (Math.random() * 18) + 's';
-                container.appendChild(flake);
-            }
-        })();
-
-        // ==========================================
-        // 7. PRÉPARATION
-        // ==========================================
-        prepareRaptorSound();
-        console.log('🦕 Rex Noël chargé !');
-        console.log('🎄 Musique Jurassic Park et cri du raptor prêts !');
-    </script>
-</body>
-</html>
