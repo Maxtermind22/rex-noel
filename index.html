@@ -784,4 +784,161 @@
 
             const fragment = document.createDocumentFragment();
             data.items.forEach((item, i) => {
-                const
+                const card = document.createElement('article');
+                card.className = 'card';
+                card.style.animationDelay = `${i * 80}ms`;
+
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'product-image';
+                imgWrap.appendChild(buildImage(item.image, item.name, item.emoji));
+
+                const name = document.createElement('div');
+                name.className = 'product-name';
+                name.textContent = item.name;
+
+                const desc = document.createElement('div');
+                desc.className = 'product-desc';
+                desc.textContent = item.desc;
+
+                const price = document.createElement('div');
+                price.className = 'product-price';
+                price.innerHTML = `${item.price} <small>€</small>`;
+
+                card.append(imgWrap, name, desc, price);
+                fragment.appendChild(card);
+            });
+            dom.productsGrid.appendChild(fragment);
+            dom.productsContainer.classList.add('active');
+        }
+
+        function playRaptorSound() {
+            if (!audio.raptor) {
+                audio.raptor = new Audio(CONFIG.raptor);
+                audio.raptor.volume = CONFIG.raptorVolume;
+                audio.raptor.preload = 'auto';
+                audio.raptor.addEventListener('canplaythrough', () => { audio.raptorReady = true; }, { once: true });
+            }
+            try {
+                audio.raptor.currentTime = 0;
+                const p = audio.raptor.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+            } catch (_) { /* silencieux */ }
+        }
+
+        function startBackgroundMusic() {
+            if (audio.background) return;
+            audio.background = new Audio(CONFIG.music);
+            audio.background.loop = true;
+            audio.background.volume = CONFIG.musicVolume;
+            audio.background.preload = 'auto';
+            audio.background.addEventListener('play', () => {
+                audio.musicPlaying = true;
+                updateMusicToggle();
+            });
+            audio.background.addEventListener('pause', () => {
+                audio.musicPlaying = false;
+                updateMusicToggle();
+            });
+            audio.background.addEventListener('error', () => {
+                console.warn('⚠️ Impossible de charger la musique :', CONFIG.music);
+            });
+            const p = audio.background.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+        }
+
+        function stopBackgroundMusic() {
+            if (!audio.background) return;
+            audio.background.pause();
+            audio.background.currentTime = 0;
+        }
+
+        function toggleMusic() {
+            if (!audio.background) return;
+            if (audio.background.paused) {
+                const p = audio.background.play();
+                if (p && typeof p.catch === 'function') p.catch(() => {});
+            } else {
+                audio.background.pause();
+            }
+        }
+
+        function updateMusicToggle() {
+            const playing = audio.background && !audio.background.paused;
+            dom.musicToggle.textContent = playing ? '🔊 Musique' : '🔇 Muette';
+            dom.musicToggle.classList.toggle('muted', !playing);
+            dom.musicToggle.setAttribute('aria-pressed', String(playing));
+        }
+
+        function startSite(withMusic) {
+            audio.musicWanted = withMusic;
+            dom.welcomePage.style.display = 'none';
+            dom.mainSite.classList.add('active');
+            if (withMusic) {
+                dom.musicToggle.hidden = false;
+                startBackgroundMusic();
+            }
+        }
+
+        function goBackToWelcome() {
+            stopBackgroundMusic();
+            dom.musicToggle.hidden = true;
+            dom.welcomePage.style.display = 'flex';
+            dom.mainSite.classList.remove('active');
+            dom.productsContainer.classList.remove('active');
+            dom.categoriesContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBackToCategories() {
+            dom.productsContainer.classList.remove('active');
+            dom.categoriesContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function loadCategory(key) {
+            playRaptorSound();
+            dom.loadingScreen.classList.add('active');
+            dom.loadingScreen.setAttribute('aria-hidden', 'false');
+            dom.categoriesContainer.style.display = 'none';
+
+            setTimeout(() => {
+                dom.loadingScreen.classList.remove('active');
+                dom.loadingScreen.setAttribute('aria-hidden', 'true');
+                renderProducts(key);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, CONFIG.loadingDuration);
+        }
+
+        function createSnowflakes() {
+            const flakes = ['❄', '❅', '❆', '✦', '•'];
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.fontSize = (0.5 + Math.random() * 1.6) + 'rem';
+                flake.style.opacity = (0.15 + Math.random() * 0.3).toFixed(2);
+                flake.style.animationDuration = (10 + Math.random() * 16) + 's';
+                flake.style.animationDelay = (Math.random() * 18) + 's';
+                fragment.appendChild(flake);
+            }
+            dom.snowflakes.appendChild(fragment);
+        }
+
+        dom.btnWithMusic.addEventListener('click', () => startSite(true));
+        dom.btnSilent.addEventListener('click', () => startSite(false));
+        dom.backToWelcome.addEventListener('click', goBackToWelcome);
+        dom.backToCategories.addEventListener('click', goBackToCategories);
+        dom.musicToggle.addEventListener('click', toggleMusic);
+        dom.raptorGif.addEventListener('error', () => {
+            dom.raptorGif.replaceWith(Object.assign(document.createElement('div'), {
+                className: 'roar-text', textContent: '🦖'
+            }));
+        });
+
+        renderCategories();
+        createSnowflakes();
+    </script>
+</body>
+</html>
